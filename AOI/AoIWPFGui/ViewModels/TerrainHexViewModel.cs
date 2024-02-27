@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace AoIWPFGui.ViewModels
 {
@@ -29,6 +30,10 @@ namespace AoIWPFGui.ViewModels
 
 			CanvasLeft = 100 + position.X;
 			CanvasTop = 100 + position.Y;
+
+			if(terrainHex.Terrain == Terrain.Desert) {
+				ImageSource = Resources.Get<BitmapImage>("WorkshopYellow");
+			}
 		}
 
 		private static Color GetColor(Terrain terrain) {
@@ -44,6 +49,8 @@ namespace AoIWPFGui.ViewModels
 				_ => throw new ArgumentException(nameof(terrain)),
 			};
 		}
+
+		public ImageSource? ImageSource { get; set; }
 
 		public double CanvasLeft { get; }
 		public double CanvasTop { get; }

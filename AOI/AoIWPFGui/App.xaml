@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:AoIWPFGui"
              StartupUri="Views/MainWindow.xaml">
 	<Application.Resources>
-
+		<ResourceDictionary Source="Resources/Resources.xaml" />
 	</Application.Resources>
 </Application>

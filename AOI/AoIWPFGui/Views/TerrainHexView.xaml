@@ -9,8 +9,9 @@
              mc:Ignorable="d"
              Canvas.Left="{Binding CanvasLeft}"
              Canvas.Top="{Binding CanvasTop}"
-             d:DesignHeight="450" d:DesignWidth="800">
-	<Grid>
+             d:DesignHeight="60" d:DesignWidth="60">
+	<Canvas>
 		<Path x:Name="HexagonPath" Stroke="Black" StrokeThickness="2" />
-	</Grid>
+		<Image x:Name="BuildingImage" Width="48" Canvas.Left="-24" Canvas.Top="-24" />
+	</Canvas>
 </reactiveui:ReactiveUserControl>

@@ -1,11 +1,12 @@
 ﻿using AoIWPFGui.Util;
 using AoIWPFGui.ViewModels;
+using System.Reactive.Disposables;
 using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace AoIWPFGui.Views
 {
-	public partial class TerrainHexView : IViewFor<TerrainHexViewModel>
+	public partial class TerrainHexView : ReactiveUserControl<TerrainHexViewModel>
 	{
 		public TerrainHexView() {
 			InitializeComponent();
@@ -13,6 +14,11 @@ namespace AoIWPFGui.Views
 			this.WhenActivated(disposableRegistration => {
 				InitHexagonPath();
 				SetPosition();
+
+				this.OneWayBind(ViewModel,
+					vm => vm.ImageSource,
+					view => view.BuildingImage.Source)
+				.DisposeWith(disposableRegistration);
 			});
 		}
 
@@ -36,7 +42,7 @@ namespace AoIWPFGui.Views
 
 			var baseVectorQ = ViewModel.Orientation == Orientation.Horizontal ? new Vector(1, 0) : new Vector(0, 1);
 			var radius = ViewModel.CellRadius;
-			
+
 			var fig = new PathFigure { IsFilled = true, IsClosed = true };
 			fig.StartPoint = (Point)(baseVectorQ.Rotated(-30) * radius);
 			fig.Segments.Add(new LineSegment((Point)(baseVectorQ.Rotated(+30) * radius), true));
