@@ -8,7 +8,7 @@
         xmlns:vm="clr-namespace:AoIWPFGui.ViewModels"
         xmlns:views="clr-namespace:AoIWPFGui.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="1024" Width="1280">
 
 	<Grid>
 		<Grid.Resources>

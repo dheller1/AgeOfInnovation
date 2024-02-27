@@ -17,8 +17,8 @@ namespace AoIWPFGui.Views
 
 			this.WhenActivated(disposableRegistration => {
 				this.OneWayBind(ViewModel,
-					vm => vm.Shapes,
-					view => view.itemsControl.ItemsSource)
+					vm => vm.Cells,
+					view => view.HexItems.ItemsSource)
 				.DisposeWith(disposableRegistration);
 			});
 		}

@@ -67,8 +67,8 @@ namespace AoIWPFGui.ViewModels
 
 			var smallMap = new SmallMap();
 
-			
-			Cells = new (smallMap.Select(hex => new HexCell(hex.Q, hex.R, GetBrush(hex.Terrain))));
+
+			//Cells = new (smallMap.Select(hex => new HexCell(hex.Q, hex.R, GetBrush(hex.Terrain))));
 
 			//Cells = [new HexCell(0, 0, new SolidColorBrush(Colors.SandyBrown)), new HexCell(0, 1, new SolidColorBrush(Colors.RoyalBlue)), new HexCell(1, 0, new SolidColorBrush(Colors.Teal))];
 			/*var r1 = new Rectangle {
@@ -82,8 +82,9 @@ namespace AoIWPFGui.ViewModels
 			Canvas.SetTop(r1, 75);*/
 
 			//Shapes = [ r1, new Ellipse { Stroke = new SolidColorBrush(Colors.Cyan), Fill = new SolidColorBrush(Colors.Teal), StrokeThickness = 2, Width=75, Height=85 } ];
-			Shapes = [];
-			MakeShapes();
+			//Shapes = [];
+
+			Cells = new(smallMap.Select(hex => new TerrainHexViewModel(hex)));
 		}
 
 		public string Name { get; }
@@ -93,47 +94,6 @@ namespace AoIWPFGui.ViewModels
 
 		public Orientation Orientation { get; set; } = Orientation.Horizontal;
 
-		public ObservableCollection<Shape> Shapes { get; }
-
-		public ObservableCollection<IHexCell> Cells { get; }
-
-		public void MakeShapes() {
-			var baseVectorQ = Orientation == Orientation.Horizontal ? new Vector(1, 0) : new Vector(0, 1);
-			var baseVectorR = baseVectorQ.Rotated(60);
-
-			var distCenterToEdgeCenter = CellRadius * Math.Cos(Math.PI / 6.0);  // cos(30°) = sqrt(3)/2
-
-			Shapes.Clear();
-			foreach(var cell in Cells) {
-				var fig = new PathFigure { IsFilled = true, IsClosed = true };
-
-				var points = new[]{ (Point)(baseVectorQ.Rotated(-30)),
-									(Point)(baseVectorQ.Rotated(+30)),
-									(Point)(baseVectorQ.Rotated(+90)),
-									(Point)(baseVectorQ.Rotated(+150)),
-									(Point)(baseVectorQ.Rotated(+210)),
-									(Point)(baseVectorQ.Rotated(+270)) };
-
-
-				fig.StartPoint = (Point)(baseVectorQ.Rotated(-30) * CellRadius);
-				fig.Segments.Add(new LineSegment((Point)(baseVectorQ.Rotated(+30) * CellRadius), true));
-				fig.Segments.Add(new LineSegment((Point)(baseVectorQ.Rotated(+90) * CellRadius), true));
-				fig.Segments.Add(new LineSegment((Point)(baseVectorQ.Rotated(+150) * CellRadius), true));
-				fig.Segments.Add(new LineSegment((Point)(baseVectorQ.Rotated(+210) * CellRadius), true));
-				fig.Segments.Add(new LineSegment((Point)(baseVectorQ.Rotated(+270) * CellRadius), true));
-
-				var geom = new PathGeometry();
-				geom.Figures.Add(fig);
-				var path = new Path { Data = geom, Fill = cell.Fill, Stroke = new SolidColorBrush(Colors.Black), StrokeThickness = 2 };
-
-				var position = (2 * distCenterToEdgeCenter + CellMargin) * (cell.Q * baseVectorQ + cell.R * baseVectorR);
-
-				var w = path.Width;
-
-				Canvas.SetLeft(path, 100 + position.X);
-				Canvas.SetTop(path, 100 + position.Y);
-				Shapes.Add(path);
-			}
-		}
+		public ObservableCollection<TerrainHexViewModel> Cells { get; }
 	}
 }
