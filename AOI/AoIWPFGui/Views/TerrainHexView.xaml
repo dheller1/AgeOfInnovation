@@ -9,9 +9,11 @@
              mc:Ignorable="d"
              Canvas.Left="{Binding CanvasLeft}"
              Canvas.Top="{Binding CanvasTop}"
-             d:DesignHeight="60" d:DesignWidth="60">
+             d:DesignHeight="60" d:DesignWidth="60"
+             MouseDown="OnMouseDown">
 	<Canvas>
 		<Path x:Name="HexagonPath" Stroke="Black" StrokeThickness="2" />
 		<Image x:Name="BuildingImage" Width="48" Canvas.Left="-24" Canvas.Top="-24" />
+		<TextBlock x:Name="CoordinateText" FontSize="14" />
 	</Canvas>
 </reactiveui:ReactiveUserControl>

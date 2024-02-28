@@ -115,10 +115,15 @@ namespace AoICore.Map
 			var test = _hexMap.GroupBy(field => field.Terrain).Select(g => (g.Key, g.Count()));
 			;
 		}
-
-		private readonly HexMap<TerrainHex> _hexMap = new();
+		public TerrainHex? this[int q, int r] {
+			get => _hexMap[q, r];
+			set => _hexMap[q, r] = value;
+		}
 
 		public IEnumerator<TerrainHex> GetEnumerator() => _hexMap.GetEnumerator();
 		IEnumerator IEnumerable.GetEnumerator() => _hexMap.GetEnumerator();
+
+		private readonly HexMap<TerrainHex> _hexMap = new();
+
 	}
 }

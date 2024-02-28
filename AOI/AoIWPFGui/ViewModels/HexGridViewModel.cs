@@ -1,4 +1,6 @@
-﻿using AoICore.Map;
+﻿using AoICore.Buildings;
+using AoICore.Map;
+using AoICore.Player;
 using AoIWPFGui.Util;
 using DynamicData;
 using ReactiveUI;
@@ -62,10 +64,16 @@ namespace AoIWPFGui.ViewModels
 			}
 		}
 
+		class TestBuilding : IBuilding
+		{
+			public IPlayer Owner => throw new NotImplementedException();
+		}
+
 		public HexGridViewModel(string name) {
 			Name = name;
 
 			var smallMap = new SmallMap();
+			smallMap[5, 2].Building = new TestBuilding();
 
 
 			//Cells = new (smallMap.Select(hex => new HexCell(hex.Q, hex.R, GetBrush(hex.Terrain))));

@@ -19,6 +19,21 @@ namespace AoIWPFGui.Views
 					vm => vm.ImageSource,
 					view => view.BuildingImage.Source)
 				.DisposeWith(disposableRegistration);
+
+				this.OneWayBind(ViewModel,
+					vm => vm.Coordinates,
+					view => view.CoordinateText.Text)
+				.DisposeWith(disposableRegistration);
+
+				this.OneWayBind(ViewModel,
+					vm => vm.HasBuilding,
+					view => view.BuildingImage.Visibility)
+				.DisposeWith(disposableRegistration);
+
+				this.OneWayBind(ViewModel,
+					vm => vm.Opacity,
+					view => view.Opacity)
+				.DisposeWith(disposableRegistration);
 			});
 		}
 
@@ -56,6 +71,10 @@ namespace AoIWPFGui.Views
 
 			HexagonPath.Fill = ViewModel.Fill;
 			HexagonPath.Data = geom;
+		}
+
+		private void OnMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+			MessageBox.Show($"Hi! {ViewModel?.TerrainHex.Q}, {ViewModel?.TerrainHex.R}");
 		}
 	}
 }

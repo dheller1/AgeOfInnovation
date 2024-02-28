@@ -24,7 +24,6 @@ namespace AoIWPFGui.ViewModels
 			var baseVectorQ = Orientation == Orientation.Horizontal ? new Vector(1, 0) : new Vector(0, 1);
 			var baseVectorR = baseVectorQ.Rotated(60);
 
-
 			var distCenterToEdgeCenter = CellRadius * Math.Cos(Math.PI / 6.0);  // cos(30°) = sqrt(3)/2
 			var position = (2 * distCenterToEdgeCenter + CellMargin) * (terrainHex.Q * baseVectorQ + terrainHex.R * baseVectorR);
 
@@ -50,7 +49,13 @@ namespace AoIWPFGui.ViewModels
 			};
 		}
 
+		public double Opacity => TerrainHex.Terrain != Terrain.Wasteland ? 0.25 : 1;
+
 		public ImageSource? ImageSource { get; set; }
+
+		public string Coordinates => $"({TerrainHex.Q}, {TerrainHex.R})";
+
+		public bool HasBuilding => TerrainHex.Building != null;
 
 		public double CanvasLeft { get; }
 		public double CanvasTop { get; }
