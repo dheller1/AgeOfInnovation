@@ -1,6 +1,6 @@
 ﻿using AoICore.Buildings;
 using AoICore.Map;
-using AoICore.Player;
+using AoICore.Players;
 using AoIWPFGui.Util;
 using DynamicData;
 using ReactiveUI;
@@ -41,6 +41,8 @@ namespace AoIWPFGui.ViewModels
 
 	public class HexGridViewModel : ReactiveObject
 	{
+		private readonly SmallMap _map;
+
 		private Brush GetBrush(Terrain terrain) {
 			switch(terrain) {
 				case Terrain.Plains:
@@ -69,11 +71,9 @@ namespace AoIWPFGui.ViewModels
 			public IPlayer Owner => throw new NotImplementedException();
 		}
 
-		public HexGridViewModel(string name) {
-			Name = name;
-
-			var smallMap = new SmallMap();
-			smallMap[5, 2].Building = new TestBuilding();
+		public HexGridViewModel(SmallMap map) {
+			_map = map;
+			_map[5, 2].Building = new TestBuilding();
 
 
 			//Cells = new (smallMap.Select(hex => new HexCell(hex.Q, hex.R, GetBrush(hex.Terrain))));
@@ -92,7 +92,7 @@ namespace AoIWPFGui.ViewModels
 			//Shapes = [ r1, new Ellipse { Stroke = new SolidColorBrush(Colors.Cyan), Fill = new SolidColorBrush(Colors.Teal), StrokeThickness = 2, Width=75, Height=85 } ];
 			//Shapes = [];
 
-			Cells = new(smallMap.Select(hex => new TerrainHexViewModel(hex)));
+			Cells = new(_map.Select(hex => new TerrainHexViewModel(hex)));
 		}
 
 		public string Name { get; }

@@ -1,5 +1,5 @@
 ﻿using AoICore.Buildings;
-using AoICore.Player;
+using AoICore.Players;
 using Meeple.HexMap;
 
 namespace AoICore.Map
