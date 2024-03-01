@@ -13,8 +13,12 @@ namespace Meeple.Util
 			}
 
 			storage = value;
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+			NotifyPropertyChanged(propertyName);
 			return true;
+		}
+
+		public void NotifyPropertyChanged([CallerMemberName] string? propertyName = null) {
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
 }

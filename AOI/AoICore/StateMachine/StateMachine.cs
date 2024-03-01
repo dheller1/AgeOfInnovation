@@ -11,7 +11,7 @@ namespace AoICore.StateMachine
 		private readonly Dictionary<(IGameState, Type), IGameState> _transitions;
 
 		public StateMachine() {
-			var players = new[] { new Player("Aaron"), new Player("Bob"), new Player("Celine") };
+			var players = new[] { new Player("Aaron", Map.Terrain.Desert), new Player("Bob", Map.Terrain.Forest), new Player("Celine", Map.Terrain.Mountain) };
 
 			_currentState = new PlaceInitialWorkshopState(0, players[0]);
 			

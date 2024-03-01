@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AoIWPFGui.Util
+﻿namespace AoIWPFGui.Resources
 {
-	public static class Resources {
-		private static readonly ResourceDictionary _dict = new ResourceDictionary {
+	internal static class AppResources
+	{
+		private static readonly ResourceDictionary _dict = new() {
 			Source = new Uri("/AoiWPFGui;component/Resources/Resources.xaml", UriKind.RelativeOrAbsolute)
 		};
 

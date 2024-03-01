@@ -1,6 +1,6 @@
 ﻿namespace AoICore.StateMachine.States
 {
-	internal interface IGameState
+	public interface IGameState
 	{
 	}
 }

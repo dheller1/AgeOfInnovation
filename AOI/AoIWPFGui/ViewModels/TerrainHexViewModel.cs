@@ -1,14 +1,9 @@
-﻿using AoICore.Map;
+﻿using AoICore.Buildings;
+using AoICore.Map;
+using AoIWPFGui.Resources;
 using AoIWPFGui.Util;
-using ReactiveUI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace AoIWPFGui.ViewModels
 {
@@ -29,10 +24,6 @@ namespace AoIWPFGui.ViewModels
 
 			CanvasLeft = 100 + position.X;
 			CanvasTop = 100 + position.Y;
-
-			if(terrainHex.Terrain == Terrain.Desert) {
-				ImageSource = Resources.Get<BitmapImage>("WorkshopYellow");
-			}
 		}
 
 		private static Color GetColor(Terrain terrain) {
@@ -49,13 +40,32 @@ namespace AoIWPFGui.ViewModels
 			};
 		}
 
-		public double Opacity => TerrainHex.Terrain != Terrain.Wasteland ? 0.25 : 1;
+		public bool IsMouseOver { 
+			get => _isMouseOver;
+			internal set {
+				if(_isMouseOver != value) {
+					this.RaiseAndSetIfChanged(ref _isMouseOver, value);
+					UpdateMouseOverVisualization();
+				}
+			}
+		}
 
-		public ImageSource? ImageSource { get; set; }
+		public double Opacity {
+			get => _opacity; 
+			internal set => this.RaiseAndSetIfChanged(ref _opacity, value);
+		}
+
+		public Orientation Orientation { get; } = Orientation.Horizontal;
+		public TerrainHex TerrainHex { get; }
+		public ImageSource? ImageSource { 
+			get => _imageSource; 
+			set => this.RaiseAndSetIfChanged(ref _imageSource, value);
+		}
+
+		public BuildingType PreviewBuildingOnMouseOver { get; internal set; } = BuildingType.None;
+		public void ResetPreviewBuilding() => PreviewBuildingOnMouseOver = BuildingType.None;
 
 		public string Coordinates => $"({TerrainHex.Q}, {TerrainHex.R})";
-
-		public bool HasBuilding => TerrainHex.Building != null;
 
 		public double CanvasLeft { get; }
 		public double CanvasTop { get; }
@@ -64,7 +74,17 @@ namespace AoIWPFGui.ViewModels
 		public double CellRadius { get; set; } = 50;
 		public double CellMargin { get; set; } = 6;
 
-		public Orientation Orientation { get; } = Orientation.Horizontal;
-		public TerrainHex TerrainHex { get; }
+		private void UpdateMouseOverVisualization() {
+			if(IsMouseOver && PreviewBuildingOnMouseOver != BuildingType.None) {
+				ImageSource = ImageResources.GetBuilding(PreviewBuildingOnMouseOver, TerrainHex.Terrain);
+			}
+			else if(ImageSource != null) {
+				ImageSource = null;
+			}
+		}
+
+		private double _opacity = 1.0;
+		private bool _isMouseOver = false;
+		private ImageSource? _imageSource;
 	}
 }

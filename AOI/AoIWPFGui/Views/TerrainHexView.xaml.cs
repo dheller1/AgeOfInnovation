@@ -1,5 +1,6 @@
 ﻿using AoIWPFGui.Util;
 using AoIWPFGui.ViewModels;
+using System.Diagnostics;
 using System.Reactive.Disposables;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -23,11 +24,6 @@ namespace AoIWPFGui.Views
 				this.OneWayBind(ViewModel,
 					vm => vm.Coordinates,
 					view => view.CoordinateText.Text)
-				.DisposeWith(disposableRegistration);
-
-				this.OneWayBind(ViewModel,
-					vm => vm.HasBuilding,
-					view => view.BuildingImage.Visibility)
 				.DisposeWith(disposableRegistration);
 
 				this.OneWayBind(ViewModel,
@@ -75,6 +71,17 @@ namespace AoIWPFGui.Views
 
 		private void OnMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
 			MessageBox.Show($"Hi! {ViewModel?.TerrainHex.Q}, {ViewModel?.TerrainHex.R}");
+		}
+
+		private void OnMouseEnter(object sender, System.Windows.Input.MouseEventArgs e) {
+			if(ViewModel != null) {
+				ViewModel.IsMouseOver = true;
+			}
+		}
+		private void OnMouseLeave(object sender, System.Windows.Input.MouseEventArgs e) {
+			if(ViewModel != null) {
+				ViewModel.IsMouseOver = false;
+			}
 		}
 	}
 }

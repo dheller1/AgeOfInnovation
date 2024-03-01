@@ -1,6 +1,7 @@
 ﻿using AoICore.Buildings;
 using AoICore.Map;
 using AoICore.Players;
+using AoICore.StateMachine.States;
 using AoIWPFGui.Util;
 using DynamicData;
 using ReactiveUI;
@@ -8,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -39,6 +42,23 @@ namespace AoIWPFGui.ViewModels
 		public Brush Fill { get; }
 	}
 
+	public class GameStateObserver : IObserver<IGameState>
+	{
+		public void OnCompleted() {
+			throw new NotImplementedException();
+		}
+
+		public void OnError(Exception error) {
+			throw new NotImplementedException();
+		}
+
+		public void OnNext(IGameState value) {
+			StateChanged?.Invoke(value);
+		}
+
+		public event Action<IGameState>? StateChanged = null;
+	}
+
 	public class HexGridViewModel : ReactiveObject
 	{
 		private readonly SmallMap _map;
@@ -66,15 +86,14 @@ namespace AoIWPFGui.ViewModels
 			}
 		}
 
-		class TestBuilding : IBuilding
-		{
-			public IPlayer Owner => throw new NotImplementedException();
-		}
+		private GameStateObserver _gameStateObserver = new();
 
-		public HexGridViewModel(SmallMap map) {
+		public HexGridViewModel(SmallMap map, IObservable<IGameState> gameState) {
 			_map = map;
-			_map[5, 2].Building = new TestBuilding();
+			Cells = new(_map.Select(hex => new TerrainHexViewModel(hex)));
 
+			_gameStateObserver.StateChanged += OnGameStateChanged;
+			gameState.Subscribe(_gameStateObserver);
 
 			//Cells = new (smallMap.Select(hex => new HexCell(hex.Q, hex.R, GetBrush(hex.Terrain))));
 
@@ -91,11 +110,23 @@ namespace AoIWPFGui.ViewModels
 
 			//Shapes = [ r1, new Ellipse { Stroke = new SolidColorBrush(Colors.Cyan), Fill = new SolidColorBrush(Colors.Teal), StrokeThickness = 2, Width=75, Height=85 } ];
 			//Shapes = [];
-
-			Cells = new(_map.Select(hex => new TerrainHexViewModel(hex)));
 		}
 
-		public string Name { get; }
+		private void OnGameStateChanged(IGameState state) {
+			if(state is PlaceInitialWorkshopState placeWorkshop) {
+				var terrainType = placeWorkshop.Player.AssociatedTerrain;
+				foreach(var cell in Cells) {
+					if(cell.TerrainHex.Terrain == terrainType) {
+						cell.PreviewBuildingOnMouseOver = BuildingType.Workshop;
+						cell.Opacity = 1.0;
+					}
+					else {
+						cell.ResetPreviewBuilding();
+						cell.Opacity = 0.25;
+					}
+				}
+			}
+		}
 
 		public double CellRadius { get; set; } = 50; // equal to the length of each hexagon's edges
 		public double CellMargin { get; set; } = 6;
