@@ -22,6 +22,11 @@ namespace AoIWPFGui.Views
 				.DisposeWith(disposableRegistration);
 
 				this.OneWayBind(ViewModel,
+					vm => vm.BuildingOpacity,
+					view => view.BuildingImage.Opacity)
+				.DisposeWith(disposableRegistration);
+
+				this.OneWayBind(ViewModel,
 					vm => vm.Coordinates,
 					view => view.CoordinateText.Text)
 				.DisposeWith(disposableRegistration);

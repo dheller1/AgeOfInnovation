@@ -55,6 +55,11 @@ namespace AoIWPFGui.ViewModels
 			internal set => this.RaiseAndSetIfChanged(ref _opacity, value);
 		}
 
+		public double BuildingOpacity {
+			get => _buildingOpacity;
+			internal set => this.RaiseAndSetIfChanged(ref _buildingOpacity, value);
+		}
+
 		public Orientation Orientation { get; } = Orientation.Horizontal;
 		public TerrainHex TerrainHex { get; }
 		public ImageSource? ImageSource { 
@@ -86,5 +91,6 @@ namespace AoIWPFGui.ViewModels
 		private double _opacity = 1.0;
 		private bool _isMouseOver = false;
 		private ImageSource? _imageSource;
+		private double _buildingOpacity = 1.0;
 	}
 }

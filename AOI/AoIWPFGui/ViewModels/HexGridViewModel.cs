@@ -3,6 +3,7 @@ using AoICore.Map;
 using AoICore.Players;
 using AoICore.StateMachine.States;
 using AoIWPFGui.Util;
+using AoIWPFGui.ViewModels.Behaviors;
 using DynamicData;
 using ReactiveUI;
 using System;
@@ -42,7 +43,8 @@ namespace AoIWPFGui.ViewModels
 		public Brush Fill { get; }
 	}
 
-	public class GameStateObserver : IObserver<IGameState>
+	// unused
+	internal class GameStateObserver : IObserver<IGameState>
 	{
 		public void OnCompleted() {
 			throw new NotImplementedException();
@@ -63,69 +65,12 @@ namespace AoIWPFGui.ViewModels
 	{
 		private readonly SmallMap _map;
 
-		private Brush GetBrush(Terrain terrain) {
-			switch(terrain) {
-				case Terrain.Plains:
-					return new SolidColorBrush(Colors.SaddleBrown);
-				case Terrain.Wasteland:
-					return new SolidColorBrush(Colors.Orange);
-				case Terrain.Mountain:
-					return new SolidColorBrush(Colors.Gray);
-				case Terrain.Swamp:
-					return new SolidColorBrush(Colors.DarkSlateGray);
-				case Terrain.Lake:
-					return new SolidColorBrush(Colors.Blue);
-				case Terrain.Forest:
-					return new SolidColorBrush(Colors.DarkGreen);
-				case Terrain.Desert:
-					return new SolidColorBrush(Colors.Yellow);
-				case Terrain.River:
-					return new SolidColorBrush(Colors.Cyan) { Opacity = 0.3 };
-				default:
-					throw new ArgumentException();
-			}
-		}
-
-		private GameStateObserver _gameStateObserver = new();
-
 		public HexGridViewModel(SmallMap map, IObservable<IGameState> gameState) {
 			_map = map;
 			Cells = new(_map.Select(hex => new TerrainHexViewModel(hex)));
 
-			_gameStateObserver.StateChanged += OnGameStateChanged;
-			gameState.Subscribe(_gameStateObserver);
-
-			//Cells = new (smallMap.Select(hex => new HexCell(hex.Q, hex.R, GetBrush(hex.Terrain))));
-
-			//Cells = [new HexCell(0, 0, new SolidColorBrush(Colors.SandyBrown)), new HexCell(0, 1, new SolidColorBrush(Colors.RoyalBlue)), new HexCell(1, 0, new SolidColorBrush(Colors.Teal))];
-			/*var r1 = new Rectangle {
-				Stroke = new SolidColorBrush(Colors.Black),
-				Fill = new SolidColorBrush(Colors.White),
-				StrokeThickness = 3,
-				Width = 100,
-				Height = 100
-			};
-			Canvas.SetLeft(r1, 300);
-			Canvas.SetTop(r1, 75);*/
-
-			//Shapes = [ r1, new Ellipse { Stroke = new SolidColorBrush(Colors.Cyan), Fill = new SolidColorBrush(Colors.Teal), StrokeThickness = 2, Width=75, Height=85 } ];
-			//Shapes = [];
-		}
-
-		private void OnGameStateChanged(IGameState state) {
-			if(state is PlaceInitialWorkshopState placeWorkshop) {
-				var terrainType = placeWorkshop.Player.AssociatedTerrain;
-				foreach(var cell in Cells) {
-					if(cell.TerrainHex.Terrain == terrainType) {
-						cell.PreviewBuildingOnMouseOver = BuildingType.Workshop;
-						cell.Opacity = 1.0;
-					}
-					else {
-						cell.ResetPreviewBuilding();
-						cell.Opacity = 0.25;
-					}
-				}
-			}
+			var placeInitialWorkshopsBehavior = new PlaceInitialWorkshopsBehavior(this);
+			gameState.Subscribe(placeInitialWorkshopsBehavior);
 		}
 
 		public double CellRadius { get; set; } = 50; // equal to the length of each hexagon's edges
