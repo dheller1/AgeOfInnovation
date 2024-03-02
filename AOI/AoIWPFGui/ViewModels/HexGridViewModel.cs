@@ -1,9 +1,11 @@
-﻿using AoICore.Buildings;
+﻿using AoICore;
+using AoICore.Buildings;
 using AoICore.Map;
 using AoICore.Players;
 using AoICore.StateMachine.States;
 using AoIWPFGui.Util;
 using AoIWPFGui.ViewModels.Behaviors;
+using AoIWPFGui.Views;
 using DynamicData;
 using ReactiveUI;
 using System;
@@ -16,33 +18,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace AoIWPFGui.ViewModels
 {
-	public interface IHexCell {
-		int Q { get; }
-		int R { get; }
-
-		Brush Fill { get; }
-	}
-
-	public class HexCell : IHexCell
-	{
-		public HexCell(int q, int r, Brush fill) {
-			Q = q;
-			R = r;
-			Fill = fill;
-		}
-
-		public int Q { get; }
-
-		public int R { get; }
-
-		public Brush Fill { get; }
-	}
-
 	// unused
 	internal class GameStateObserver : IObserver<IGameState>
 	{
@@ -65,12 +46,14 @@ namespace AoIWPFGui.ViewModels
 	{
 		private readonly SmallMap _map;
 
-		public HexGridViewModel(SmallMap map, IObservable<IGameState> gameState) {
-			_map = map;
+		public HexGridViewModel(AoIGame game, IObservable<IGameState> gameState) {
+			_map = game.Map;
 			Cells = new(_map.Select(hex => new TerrainHexViewModel(hex)));
+			SubscribeCellEvents();
 
 			var placeInitialWorkshopsBehavior = new PlaceInitialWorkshopsBehavior(this);
 			gameState.Subscribe(placeInitialWorkshopsBehavior);
+			Game = game;
 		}
 
 		public double CellRadius { get; set; } = 50; // equal to the length of each hexagon's edges
@@ -78,6 +61,22 @@ namespace AoIWPFGui.ViewModels
 
 		public Orientation Orientation { get; set; } = Orientation.Horizontal;
 
+		public event Action<TerrainHexViewModel, MouseButtonEventArgs>? CellMouseDown;
+
 		public ObservableCollection<TerrainHexViewModel> Cells { get; }
+		internal AoIGame Game { get; }
+
+		private void SubscribeCellEvents() {
+			foreach(var cell in Cells) {
+				cell.MouseDown += OnCell_MouseDown;
+			}
+		}
+
+		private void OnCell_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+			var senderVm = ((TerrainHexView)sender).ViewModel;
+			if(senderVm != null) {
+				CellMouseDown?.Invoke(senderVm, e);
+			}
+		}
 	}
 }

@@ -75,7 +75,9 @@ namespace AoIWPFGui.Views
 		}
 
 		private void OnMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
-			MessageBox.Show($"Hi! {ViewModel?.TerrainHex.Q}, {ViewModel?.TerrainHex.R}");
+			if(ViewModel != null) {
+				ViewModel.OnMouseDown(sender, e);
+			}
 		}
 
 		private void OnMouseEnter(object sender, System.Windows.Input.MouseEventArgs e) {

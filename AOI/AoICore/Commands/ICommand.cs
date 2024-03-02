@@ -1,7 +1,8 @@
 ﻿namespace AoICore.Commands
 {
-	internal interface ICommand
+	public interface ICommand
 	{
 		void Execute();
+		void Undo();
 	}
 }

@@ -13,14 +13,10 @@ namespace AoIWPFGui.ViewModels
 	{
 		public AppViewModel() {
 			var gameStateObserver = Game.WhenAnyValue(game => game.CurrentState);
-			HexGridVM = new HexGridViewModel(Game.Map, gameStateObserver);
-
-			Game.TestProceedState();
+			HexGridVM = new HexGridViewModel(Game, gameStateObserver);
 		}
+		public AoIGame Game { get; } = new AoIGame();
 		
 		public HexGridViewModel HexGridVM { get; }
-
-		public AoIGame Game { get; } = new AoIGame();
-
 	}
 }

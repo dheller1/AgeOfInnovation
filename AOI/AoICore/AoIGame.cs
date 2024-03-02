@@ -20,8 +20,8 @@ namespace AoICore
 			get => StateMachine.CurrentState;
 		}
 
-		public void TestProceedState() {
-			StateMachine.ApplyCommand(new PlaceInitialWorkshopCommand());
+		public void InvokeCommand(ICommand command) {
+			StateMachine.ApplyCommand(command);
 		}
 
 		internal StateMachine.StateMachine StateMachine { get; } = new();

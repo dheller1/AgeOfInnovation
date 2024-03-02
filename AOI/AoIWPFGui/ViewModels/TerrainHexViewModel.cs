@@ -3,6 +3,7 @@ using AoICore.Map;
 using AoIWPFGui.Resources;
 using AoIWPFGui.Util;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace AoIWPFGui.ViewModels
@@ -15,6 +16,7 @@ namespace AoIWPFGui.ViewModels
 				Fill.Opacity = 0.3;
 			}
 			TerrainHex = terrainHex;
+			terrainHex.PropertyChanged += OnTerrainHex_PropertyChanged;
 
 			var baseVectorQ = Orientation == Orientation.Horizontal ? new Vector(1, 0) : new Vector(0, 1);
 			var baseVectorR = baseVectorQ.Rotated(60);
@@ -24,6 +26,24 @@ namespace AoIWPFGui.ViewModels
 
 			CanvasLeft = 100 + position.X;
 			CanvasTop = 100 + position.Y;
+		}
+
+		private void OnTerrainHex_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			switch(e.PropertyName) {
+				case nameof(TerrainHex.Building):
+					UpdateVisualization();
+					break;
+			}
+		}
+
+		private void UpdateVisualization() {
+			BuildingOpacity = 1.0;
+			if(TerrainHex.Building != null) {
+				ImageSource = ImageResources.GetBuilding(TerrainHex.Building.Type, TerrainHex.Terrain);
+			}
+			else {
+				ImageSource = null;
+			}
 		}
 
 		private static Color GetColor(Terrain terrain) {
@@ -82,11 +102,18 @@ namespace AoIWPFGui.ViewModels
 		private void UpdateMouseOverVisualization() {
 			if(IsMouseOver && PreviewBuildingOnMouseOver != BuildingType.None) {
 				ImageSource = ImageResources.GetBuilding(PreviewBuildingOnMouseOver, TerrainHex.Terrain);
+				BuildingOpacity = 0.7;
 			}
-			else if(ImageSource != null) {
-				ImageSource = null;
+			else {
+				UpdateVisualization();
 			}
 		}
+
+		internal void OnMouseDown(object sender, MouseButtonEventArgs e) {
+			MouseDown?.Invoke(sender, e);
+		}
+
+		public event Action<object, MouseButtonEventArgs>? MouseDown;
 
 		private double _opacity = 1.0;
 		private bool _isMouseOver = false;
