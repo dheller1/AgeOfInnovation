@@ -27,7 +27,7 @@ namespace AoIWPFGui.ViewModels.Behaviors
 			if(CurrentState == null) { throw new InvalidOperationException(); }
 
 			foreach(var cell in AssociatedObject.Cells) {
-				if(cell.TerrainHex.Terrain == CurrentState.Player.AssociatedTerrain) {
+				if(cell.TerrainHex.Terrain == CurrentState.ActivePlayer.AssociatedTerrain) {
 					cell.PreviewBuildingOnMouseOver = BuildingType.Workshop;
 					cell.Opacity = 1.0;
 				}
@@ -51,7 +51,7 @@ namespace AoIWPFGui.ViewModels.Behaviors
 		private void OnCellMouseDown(TerrainHexViewModel cell, System.Windows.Input.MouseButtonEventArgs e) {
 			if(!IsActive) { throw new InvalidOperationException("event should be unsubscribed when inactive!"); }
 			if(e.ChangedButton == System.Windows.Input.MouseButton.Left) {
-				var player = CurrentState?.Player ?? throw new InvalidOperationException();
+				var player = CurrentState?.ActivePlayer ?? throw new InvalidOperationException();
 				if(cell.TerrainHex.Terrain == player.AssociatedTerrain) {
 					var cmd = new PlaceInitialWorkshopCommand(player, cell.TerrainHex);
 					AssociatedObject.Game.InvokeCommand(cmd);

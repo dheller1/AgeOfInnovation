@@ -1,4 +1,5 @@
-﻿using AoICore.Players;
+﻿using AoICore.Commands;
+using AoICore.Players;
 
 namespace AoICore.StateMachine.States
 {
@@ -7,19 +8,42 @@ namespace AoICore.StateMachine.States
 	/// </summary>
 	public class PlaceInitialWorkshopState : IGameState
 	{
-		public PlaceInitialWorkshopState(int workshopIndex, IPlayer player) {
-			_workshopIndex = workshopIndex;
-			Player = player;
+		public PlaceInitialWorkshopState(IEnumerable<IPlayer> playerOrder) {
+			ArgumentNullException.ThrowIfNull(playerOrder);
+
+			_playerOrder = playerOrder.Concat(playerOrder.Reverse()).ToArray();
+			_playerEnumerator = _playerOrder.GetEnumerator();
+			_playerEnumerator.MoveNext();
 		}
 
-		public IPlayer Player { get; }
-		private readonly int _workshopIndex;
-
-		public override bool Equals(object? obj) {
-			var other = obj as PlaceInitialWorkshopState;
-			return other != null && Player == other.Player && _workshopIndex == other._workshopIndex;
+		/// <summary>
+		/// Copy ctor used to ensure a new game state object is produced after applying an operation
+		/// </summary>
+		private PlaceInitialWorkshopState(PlaceInitialWorkshopState state) {
+			_playerOrder = state._playerOrder;
+			_playerEnumerator = state._playerEnumerator;
 		}
-		public override string ToString() => $"{nameof(PlaceInitialWorkshopState)}({Player}, {_workshopIndex + 1}. workshop)";
-		public override int GetHashCode() => (Player, _workshopIndex).GetHashCode();
+
+		private readonly IEnumerable<IPlayer> _playerOrder;
+		private readonly IEnumerator<IPlayer> _playerEnumerator;
+
+		public IPlayer ActivePlayer => _playerEnumerator.Current;
+
+		public IGameState? ApplyCommand(ICommand command) {
+			if(!(command is PlaceInitialWorkshopCommand placeCmd)) {
+				throw new UnsupportedCommandException(command);
+			}
+
+			if(placeCmd.Player != ActivePlayer) {
+				throw new InvalidOperationException($"The command must be issued by {ActivePlayer}.");
+			}
+
+			if(_playerEnumerator.MoveNext()) {
+				return new PlaceInitialWorkshopState(this);
+			}
+			else {
+				return null;
+			}
+		}
 	}
 }
