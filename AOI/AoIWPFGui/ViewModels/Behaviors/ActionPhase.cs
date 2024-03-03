@@ -6,14 +6,14 @@ using System.Windows.Input;
 
 namespace AoIWPFGui.ViewModels.Behaviors
 {
-	internal class PlaceInitialWorkshopsBehavior : StateBehavior<HexGridViewModel, IGameState>
+	internal class ActionPhaseBehavior : StateBehavior<HexGridViewModel, IGameState>
 	{
-		public PlaceInitialWorkshopsBehavior(HexGridViewModel associatedObject)
-			: base(associatedObject, state => state is PlaceInitialWorkshopState)
+		public ActionPhaseBehavior(HexGridViewModel associatedObject)
+			: base(associatedObject, state => state is ActionPhaseState)
 		{
 		}
 
-		private PlaceInitialWorkshopState? CurrentState => _currentState as PlaceInitialWorkshopState;
+		private ActionPhaseState? CurrentState => _currentState as ActionPhaseState;
 
 		protected override void OnNextState(bool wasActive, bool isActive) {
 			if(isActive) {
@@ -29,14 +29,12 @@ namespace AoIWPFGui.ViewModels.Behaviors
 
 			foreach(var cell in AssociatedObject.Cells) {
 				if(cell.TerrainHex.Terrain == CurrentState.ActivePlayer.AssociatedTerrain) {
-					if(cell.TerrainHex.Building == null) {
-						cell.PreviewBuildingOnMouseOver = BuildingType.Workshop;
+					if(cell.TerrainHex.Building?.Type == BuildingType.Workshop) {
+						cell.PreviewBuildingOnMouseOver = BuildingType.Guild;
 					}
-					cell.Opacity = 1.0;
 				}
 				else {
 					cell.ResetPreviewBuilding();
-					cell.Opacity = 0.25;
 				}
 			}
 
@@ -44,27 +42,24 @@ namespace AoIWPFGui.ViewModels.Behaviors
 				AssociatedObject.CellMouseDown += OnCellMouseDown;
 			}
 		}
+		
 		private void Deactivate() {
 			foreach(var cell in AssociatedObject.Cells) {
-				ResetCell(cell);
+				cell.ResetPreviewBuilding();
 			}
 			AssociatedObject.CellMouseDown -= OnCellMouseDown;
 		}
-
 		private void OnCellMouseDown(TerrainHexViewModel cell, MouseButtonEventArgs e) {
 			if(!IsActive) { throw new InvalidOperationException("event should be unsubscribed when inactive!"); }
 			if(e.ChangedButton == MouseButton.Left) {
 				var player = CurrentState?.ActivePlayer ?? throw new InvalidOperationException();
-				var cmd = new PlaceInitialWorkshopCommand(player, cell.TerrainHex);
-				if(cmd.CanExecute) {
-					AssociatedObject.Game.InvokeCommand(cmd);
+				if(cell.TerrainHex.Terrain == player.AssociatedTerrain && cell.TerrainHex.Building?.Type == BuildingType.Workshop) {
+					throw new NotImplementedException();
+					//var cmd = new PlaceInitialWorkshopCommand(player, cell.TerrainHex);
+					//AssociatedObject.Game.InvokeCommand(cmd);
 				}
 			}
 		}
 
-		private static void ResetCell(TerrainHexViewModel cell) {
-			cell.ResetPreviewBuilding();
-			cell.Opacity = 1.0;
-		}
 	}
 }

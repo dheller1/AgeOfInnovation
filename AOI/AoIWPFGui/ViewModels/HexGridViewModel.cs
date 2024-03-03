@@ -49,11 +49,14 @@ namespace AoIWPFGui.ViewModels
 		public HexGridViewModel(AoIGame game, IObservable<IGameState> gameState) {
 			_map = game.Map;
 			Cells = new(_map.Select(hex => new TerrainHexViewModel(hex)));
+			Game = game;
 			SubscribeCellEvents();
 
 			var placeInitialWorkshopsBehavior = new PlaceInitialWorkshopsBehavior(this);
 			gameState.Subscribe(placeInitialWorkshopsBehavior);
-			Game = game;
+
+			var actionPhaseBehavior = new ActionPhaseBehavior(this);
+			gameState.Subscribe(actionPhaseBehavior);
 		}
 
 		public double CellRadius { get; set; } = 50; // equal to the length of each hexagon's edges

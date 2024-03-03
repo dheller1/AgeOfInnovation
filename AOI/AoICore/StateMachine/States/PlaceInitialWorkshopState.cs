@@ -42,7 +42,7 @@ namespace AoICore.StateMachine.States
 				return new PlaceInitialWorkshopState(this);
 			}
 			else {
-				return null;
+				return new ActionPhaseState(_playerOrder.Take(_playerOrder.Count() / 2));
 			}
 		}
 	}

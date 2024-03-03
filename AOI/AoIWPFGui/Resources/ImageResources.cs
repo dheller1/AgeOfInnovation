@@ -6,6 +6,14 @@ namespace AoIWPFGui.Resources
 {
 	internal static class ImageResources
 	{
-		public static BitmapImage GetBuilding(BuildingType typ, Terrain color) => AppResources.Get<BitmapImage>("WorkshopYellow");
+		public static BitmapImage GetBuilding(BuildingType typ, Terrain color) {
+			switch(typ) {
+				case BuildingType.Guild:
+					return AppResources.Get<BitmapImage>("GuildYellow");
+				case BuildingType.Workshop:
+				default:
+					return AppResources.Get<BitmapImage>("WorkshopYellow");
+			}
+		}
 	}
 }

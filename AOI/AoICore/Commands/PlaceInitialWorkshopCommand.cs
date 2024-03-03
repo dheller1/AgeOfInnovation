@@ -14,6 +14,8 @@ namespace AoICore.Commands
 		public IPlayer Player { get; }
 		public TerrainHex Position { get; }
 
+		public bool CanExecute => Player.AssociatedTerrain == Position.Terrain && Position.Building == null;
+
 		public void Execute() {
 			if(Position.Building != null) { throw new InvalidOperationException("The hex already contains a building."); }
 			Position.Building = new Building(Player, BuildingType.Workshop);

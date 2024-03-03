@@ -10,12 +10,6 @@ namespace AoICore
 			StateMachine.PropertyChanged += OnStateMachine_PropertyChanged;
 		}
 
-		private void OnStateMachine_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e) {
-			if(e.PropertyName == nameof(StateMachine.CurrentState)) {
-				NotifyPropertyChanged(nameof(CurrentState));
-			}
-		}
-
 		public IGameState CurrentState {
 			get => StateMachine.CurrentState;
 		}
@@ -24,7 +18,13 @@ namespace AoICore
 			StateMachine.ApplyCommand(command);
 		}
 
-		internal StateMachine.StateMachine StateMachine { get; } = new();
 		public SmallMap Map { get; } = new SmallMap();
+
+		internal StateMachine.StateMachine StateMachine { get; } = new();
+		private void OnStateMachine_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e) {
+			if(e.PropertyName == nameof(StateMachine.CurrentState)) {
+				NotifyPropertyChanged(nameof(CurrentState));
+			}
+		}
 	}
 }
