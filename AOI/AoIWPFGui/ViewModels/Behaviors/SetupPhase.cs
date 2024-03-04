@@ -30,7 +30,7 @@ namespace AoIWPFGui.ViewModels.Behaviors
 			foreach(var cell in AssociatedObject.Cells) {
 				if(cell.TerrainHex.Terrain == CurrentState.ActivePlayer.AssociatedTerrain) {
 					if(cell.TerrainHex.Building == null) {
-						cell.PreviewBuildingOnMouseOver = BuildingType.Workshop;
+						cell.PreviewBuildingOnMouseOver = BuildingTypes.Workshop;
 					}
 					cell.Opacity = 1.0;
 				}

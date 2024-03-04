@@ -1,4 +1,5 @@
 ﻿using AoICore.Players;
+using static AoICore.Buildings.BuildingTypes;
 
 namespace AoICore.Buildings
 {

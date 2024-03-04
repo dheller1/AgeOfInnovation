@@ -29,8 +29,8 @@ namespace AoIWPFGui.ViewModels.Behaviors
 
 			foreach(var cell in AssociatedObject.Cells) {
 				if(cell.TerrainHex.Terrain == CurrentState.ActivePlayer.AssociatedTerrain) {
-					if(cell.TerrainHex.Building?.Type == BuildingType.Workshop) {
-						cell.PreviewBuildingOnMouseOver = BuildingType.Guild;
+					if(cell.TerrainHex.Building?.Type == BuildingTypes.Workshop) {
+						cell.PreviewBuildingOnMouseOver = BuildingTypes.Guild;
 					}
 				}
 				else {
@@ -53,7 +53,7 @@ namespace AoIWPFGui.ViewModels.Behaviors
 			if(!IsActive) { throw new InvalidOperationException("event should be unsubscribed when inactive!"); }
 			if(e.ChangedButton == MouseButton.Left) {
 				var player = CurrentState?.ActivePlayer ?? throw new InvalidOperationException();
-				if(cell.TerrainHex.Terrain == player.AssociatedTerrain && cell.TerrainHex.Building?.Type == BuildingType.Workshop) {
+				if(cell.TerrainHex.Terrain == player.AssociatedTerrain && cell.TerrainHex.Building?.Type == BuildingTypes.Workshop) {
 					throw new NotImplementedException();
 					//var cmd = new PlaceInitialWorkshopCommand(player, cell.TerrainHex);
 					//AssociatedObject.Game.InvokeCommand(cmd);

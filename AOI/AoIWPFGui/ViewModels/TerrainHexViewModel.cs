@@ -5,6 +5,7 @@ using AoIWPFGui.Util;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using static AoICore.Buildings.BuildingTypes;
 
 namespace AoIWPFGui.ViewModels
 {
@@ -87,8 +88,8 @@ namespace AoIWPFGui.ViewModels
 			set => this.RaiseAndSetIfChanged(ref _imageSource, value);
 		}
 
-		public BuildingType PreviewBuildingOnMouseOver { get; internal set; } = BuildingType.None;
-		public void ResetPreviewBuilding() => PreviewBuildingOnMouseOver = BuildingType.None;
+		public BuildingType? PreviewBuildingOnMouseOver { get; internal set; }
+		public void ResetPreviewBuilding() => PreviewBuildingOnMouseOver = null;
 
 		public string Coordinates => $"({TerrainHex.Q}, {TerrainHex.R})";
 
@@ -100,7 +101,7 @@ namespace AoIWPFGui.ViewModels
 		public double CellMargin { get; set; } = 6;
 
 		private void UpdateMouseOverVisualization() {
-			if(IsMouseOver && PreviewBuildingOnMouseOver != BuildingType.None) {
+			if(IsMouseOver && PreviewBuildingOnMouseOver != null) {
 				ImageSource = ImageResources.GetBuilding(PreviewBuildingOnMouseOver, TerrainHex.Terrain);
 				BuildingOpacity = 0.7;
 			}

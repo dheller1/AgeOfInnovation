@@ -18,7 +18,7 @@ namespace AoICore.Commands
 
 		public void Execute() {
 			if(Position.Building != null) { throw new InvalidOperationException("The hex already contains a building."); }
-			Position.Building = new Building(Player, BuildingType.Workshop);
+			Position.Building = new Building(Player, BuildingTypes.Workshop);
 		}
 		public void Undo() {
 			Position.Building = null;

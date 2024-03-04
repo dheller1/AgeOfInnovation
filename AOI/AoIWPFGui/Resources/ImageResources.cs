@@ -1,19 +1,20 @@
 ﻿using AoICore.Buildings;
 using AoICore.Map;
 using System.Windows.Media.Imaging;
+using static AoICore.Buildings.BuildingTypes;
 
 namespace AoIWPFGui.Resources
 {
 	internal static class ImageResources
 	{
 		public static BitmapImage GetBuilding(BuildingType typ, Terrain color) {
-			switch(typ) {
-				case BuildingType.Guild:
-					return AppResources.Get<BitmapImage>("GuildYellow");
-				case BuildingType.Workshop:
-				default:
-					return AppResources.Get<BitmapImage>("WorkshopYellow");
+			if(typ == BuildingTypes.Guild) {
+				return AppResources.Get<BitmapImage>("GuildYellow");
 			}
+			else if(typ == BuildingTypes.Workshop) {
+				return AppResources.Get<BitmapImage>("WorkshopYellow");
+			}
+			throw new ArgumentException("Unexpected buildingt type", nameof(typ));
 		}
 	}
 }

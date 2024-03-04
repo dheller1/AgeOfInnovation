@@ -1,4 +1,5 @@
 ﻿using AoICore.Players;
+using static AoICore.Buildings.BuildingTypes;
 
 namespace AoICore.Buildings
 {
@@ -6,7 +7,6 @@ namespace AoICore.Buildings
 	{
 		public Building(IPlayer owner, BuildingType type) {
 			Owner = owner ?? throw new ArgumentNullException(nameof(owner));
-			if(type == BuildingType.None) { throw new ArgumentException("BuildingType must not be None"); }
 			Type = type;
 		}
 
