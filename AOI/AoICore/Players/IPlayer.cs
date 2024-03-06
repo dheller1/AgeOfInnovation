@@ -1,4 +1,5 @@
-﻿using AoICore.Map;
+﻿using AoICore.AoIResources;
+using AoICore.Map;
 
 namespace AoICore.Players
 {
@@ -6,5 +7,6 @@ namespace AoICore.Players
 	{
 		string Name { get; }
 		Terrain AssociatedTerrain { get; }
+		Supply Resources { get; }
 	}
 }

@@ -119,6 +119,9 @@
 				</Setter>
 			</Style>
 		</Grid.Resources>
+		<DockPanel>
+			<views:PlayerSummaryView x:Name="Player1Summary" DockPanel.Dock="Left" />
+		</DockPanel>
 		<views:HexGridView x:Name="hexGridView" />
 
 		<!--<DockPanel>

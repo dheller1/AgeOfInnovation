@@ -9,8 +9,7 @@ namespace AoICore.StateMachine
 	{
 		private IGameState _currentState;
 
-		public StateMachine() {
-			var players = new[] { new Player("Aaron", Map.Terrain.Desert), new Player("Bob", Map.Terrain.Forest), new Player("Celine", Map.Terrain.Mountain) };
+		public StateMachine(IEnumerable<IPlayer> players) {
 			_currentState = new PlaceInitialWorkshopState(players);
 		}
 

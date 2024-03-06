@@ -21,6 +21,13 @@
 		public static bool operator <=(Tools c, int i) => c._amount <= i;
 		public static bool operator >=(Tools c, int i) => c._amount >= i;
 
+		public static bool operator <(Tools a, Tools b) => a._amount < b._amount;
+		public static bool operator >(Tools a, Tools b) => a._amount > b._amount;
+		public static bool operator ==(Tools a, Tools b) => a._amount == b._amount;
+		public static bool operator !=(Tools a, Tools b) => a._amount != b._amount;
+		public static bool operator <=(Tools a, Tools b) => a._amount <= b._amount;
+		public static bool operator >=(Tools a, Tools b) => a._amount >= b._amount;
+
 		public override readonly bool Equals(object? obj) => obj is Tools oc && oc._amount == this._amount;
 		public override readonly int GetHashCode() => _amount.GetHashCode();
 	}

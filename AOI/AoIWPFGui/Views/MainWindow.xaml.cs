@@ -17,6 +17,11 @@ namespace AoIWPFGui.Views
 					vm => vm.HexGridVM,
 					view => view.hexGridView.ViewModel)
 				.DisposeWith(disposableRegistration);
+
+				this.OneWayBind(ViewModel,
+					vm => vm.Player1SummaryVM,
+					view => view.Player1Summary.ViewModel)
+				.DisposeWith(disposableRegistration);
 			});
 		}
 	}

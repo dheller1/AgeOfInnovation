@@ -8,13 +8,14 @@ namespace AoICore.Players
 		public Player(string name, Terrain terrain = Terrain.None) {
 			Name = name;
 			AssociatedTerrain = terrain;
+			Resources.Add((Coins)15);
+			Resources.Add((Tools) 3);
 		}
 
 		public string Name { get; }
 		public Terrain AssociatedTerrain { get; set; }
 
-		public Coins Coins { get; set; } = (Coins)15;
-		public Tools Tools { get; set; } = (Tools) 3;
+		public Supply Resources { get; } = new();
 
 		public override string ToString() => $"{Name} ({AssociatedTerrain})";
 	}

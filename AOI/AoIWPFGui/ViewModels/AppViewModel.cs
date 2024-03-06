@@ -1,11 +1,5 @@
 ﻿using AoICore;
-using ReactiveUI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AoIWPFGui.ViewModels
 {
@@ -14,9 +8,12 @@ namespace AoIWPFGui.ViewModels
 		public AppViewModel() {
 			var gameStateObserver = Game.WhenAnyValue(game => game.CurrentState);
 			HexGridVM = new HexGridViewModel(Game, gameStateObserver);
+			Player1SummaryVM = new PlayerSummaryViewModel(Game.Players.First());
 		}
+
 		public AoIGame Game { get; } = new AoIGame();
 		
 		public HexGridViewModel HexGridVM { get; }
+		public PlayerSummaryViewModel Player1SummaryVM { get; }
 	}
 }
