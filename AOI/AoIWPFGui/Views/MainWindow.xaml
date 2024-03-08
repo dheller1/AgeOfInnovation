@@ -29,14 +29,5 @@
 		</Grid>
 		
 		<views:HexGridView Margin="50 50 0 0" x:Name="hexGridView" />
-
-		<!--<DockPanel>
-			<WrapPanel x:Name="MyHexagonMenu" DockPanel.Dock="Top">
-				<Button Content="File" IsEnabled="False" />
-				<Button Content="Edit" />
-				<Button Content="Aboutabadbadsb" />
-				<Button Content="Exit" />
-			</WrapPanel>
-		</DockPanel>-->
 	</Grid>
 </reactiveui:ReactiveWindow>

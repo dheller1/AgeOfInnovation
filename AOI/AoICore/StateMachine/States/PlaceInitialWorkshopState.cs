@@ -6,7 +6,7 @@ namespace AoICore.StateMachine.States
 	/// <summary>
 	/// State which expects a player to place one of their two initial workshops.
 	/// </summary>
-	public class PlaceInitialWorkshopState : IGameState
+	public class PlaceInitialWorkshopState : IActivePlayerGameState
 	{
 		public PlaceInitialWorkshopState(IEnumerable<IPlayer> playerOrder) {
 			ArgumentNullException.ThrowIfNull(playerOrder);

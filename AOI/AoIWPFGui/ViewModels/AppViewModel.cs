@@ -7,10 +7,12 @@ namespace AoIWPFGui.ViewModels
 	{
 		public AppViewModel() {
 			var gameStateObserver = Game.WhenAnyValue(game => game.CurrentState);
+			var activePlayerObserver = Game.WhenAnyValue(game => game.ActivePlayer);
+
 			HexGridVM = new HexGridViewModel(Game, gameStateObserver);
-			Player1SummaryVM = new PlayerSummaryViewModel(Game.Players.ElementAt(0));
-			Player2SummaryVM = new PlayerSummaryViewModel(Game.Players.ElementAt(1));
-			Player3SummaryVM = new PlayerSummaryViewModel(Game.Players.ElementAt(2));
+			Player1SummaryVM = new PlayerSummaryViewModel(Game.Players.ElementAt(0), activePlayerObserver);
+			Player2SummaryVM = new PlayerSummaryViewModel(Game.Players.ElementAt(1), activePlayerObserver);
+			Player3SummaryVM = new PlayerSummaryViewModel(Game.Players.ElementAt(2), activePlayerObserver);
 		}
 
 		public AoIGame Game { get; } = new AoIGame();

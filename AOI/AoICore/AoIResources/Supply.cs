@@ -1,24 +1,33 @@
-﻿namespace AoICore.AoIResources
+﻿using Meeple.Util;
+
+namespace AoICore.AoIResources
 {
-	public class Supply
+	public class Supply : NotificationBase
 	{
 		public Supply() { }
 
 		public void Add(Coins coins) => Coins += coins;
 		public void Add(Tools tools) => Tools += tools;
+		public void Add(Cost cost) {
+			Coins += cost.Coins;
+			Tools += cost.Tools;
+		}
 
 		public bool CanPay(Cost cost) {
 			return Coins >= cost.Coins && Tools >= cost.Tools;
 		}
 
-		public bool TryPay(Cost cost) {
-			if(!CanPay(cost)) { return false; }
+		public bool Pay(Cost cost) {
+			if(!CanPay(cost)) { throw new InvalidOperationException("Insufficient resources to pay cost"); }
 			Coins -= cost.Coins;
 			Tools -= cost.Tools;
 			return true;
 		}
 
-		public Coins Coins { get; private set; }
-		public Tools Tools { get; private set; }
+		public Coins Coins { get => _coins; private set => SetProperty(ref _coins, value); }
+		public Tools Tools { get => _tools; private set => SetProperty(ref _tools, value); }
+
+		private Coins _coins;
+		private Tools _tools;
 	}
 }

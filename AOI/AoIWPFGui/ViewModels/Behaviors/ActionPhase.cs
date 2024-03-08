@@ -54,9 +54,8 @@ namespace AoIWPFGui.ViewModels.Behaviors
 			if(e.ChangedButton == MouseButton.Left) {
 				var player = CurrentState?.ActivePlayer ?? throw new InvalidOperationException();
 				if(cell.TerrainHex.Terrain == player.AssociatedTerrain && cell.TerrainHex.Building?.Type == BuildingTypes.Workshop) {
-					throw new NotImplementedException();
-					//var cmd = new PlaceInitialWorkshopCommand(player, cell.TerrainHex);
-					//AssociatedObject.Game.InvokeCommand(cmd);
+					var cmd = new UpgradeBuildingCommand(player, cell.TerrainHex, cell.TerrainHex.Building.Type.UpgradeOptions.First());
+					AssociatedObject.Game.InvokeCommand(cmd);
 				}
 			}
 		}

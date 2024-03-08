@@ -12,8 +12,9 @@
 	<Grid>
 		<Label>
 			<Grid>
-				<Rectangle Fill="Gray" Opacity="0.25" RadiusX="10" RadiusY="10" />
-				<TextBlock FontSize="16" Margin="8">
+				<Rectangle Margin="8" x:Name="BackgroundRect" Fill="Gray" Opacity="0.25" RadiusX="8" RadiusY="8" />
+				<Rectangle x:Name="BorderRect" RadiusX="12" RadiusY="12" Stroke="Red" StrokeThickness="4" />
+				<TextBlock FontSize="20" Margin="16">
 					<Run x:Name="PlayerNameRun" Text="PlayerName" FontWeight="Bold"/> (<Run x:Name="CoinsRun"/><Run Text="C" /> <Run x:Name="ToolsRun"/><Run Text="T" />)
 				</TextBlock>
 			</Grid>

@@ -24,6 +24,11 @@ namespace AoIWPFGui.Views
 					view => view.ToolsRun.Text)
 				.DisposeWith(disposableRegistration);
 
+				this.OneWayBind(ViewModel,
+					vm => vm.BorderOpacity,
+					view => view.BorderRect.Opacity)
+				.DisposeWith(disposableRegistration);
+
 			});
 		}
 	}
