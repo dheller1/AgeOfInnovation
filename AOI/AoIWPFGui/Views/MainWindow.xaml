@@ -11,118 +11,24 @@
         Title="MainWindow" Height="1024" Width="1280">
 
 	<Grid>
-		<Grid.Resources>
-			<Style x:Key="ButtonFocusVisual">
-				<Setter Property="Control.Template">
-					<Setter.Value>
-						<ControlTemplate>
-							<Border>
-								<Rectangle Margin="2" StrokeThickness="1" Stroke="#60000000" StrokeDashArray="1 2"/>
-							</Border>
-						</ControlTemplate>
-					</Setter.Value>
-				</Setter>
-			</Style>
-
-			<LinearGradientBrush x:Key="NormalBrush" StartPoint="0,0" EndPoint="0,1">
-				<GradientBrush.GradientStops>
-					<GradientStopCollection>
-						<GradientStop Color="#FFF" Offset="0.0"/>
-						<GradientStop Color="#CCC" Offset="1.0"/>
-					</GradientStopCollection>
-				</GradientBrush.GradientStops>
-			</LinearGradientBrush>
-
-			<LinearGradientBrush x:Key="HorizontalNormalBrush" StartPoint="0,0" EndPoint="1,0">
-				<GradientBrush.GradientStops>
-					<GradientStopCollection>
-						<GradientStop Color="#FFF" Offset="0.0"/>
-						<GradientStop Color="#CCC" Offset="1.0"/>
-					</GradientStopCollection>
-				</GradientBrush.GradientStops>
-			</LinearGradientBrush>
-
-			<LinearGradientBrush x:Key="LightBrush" StartPoint="0,0" EndPoint="0,1">
-				<GradientBrush.GradientStops>
-					<GradientStopCollection>
-						<GradientStop Color="#FFF" Offset="0.0"/>
-						<GradientStop Color="#EEE" Offset="1.0"/>
-					</GradientStopCollection>
-				</GradientBrush.GradientStops>
-			</LinearGradientBrush>
-
-			<LinearGradientBrush x:Key="HorizontalLightBrush" StartPoint="0,0" EndPoint="1,0">
-				<GradientBrush.GradientStops>
-					<GradientStopCollection>
-						<GradientStop Color="#FFF" Offset="0.0"/>
-						<GradientStop Color="#EEE" Offset="1.0"/>
-					</GradientStopCollection>
-				</GradientBrush.GradientStops>
-			</LinearGradientBrush>
-
-			<LinearGradientBrush x:Key="DarkBrush" StartPoint="0,0" EndPoint="0,1">
-				<GradientBrush.GradientStops>
-					<GradientStopCollection>
-						<GradientStop Color="#FFF" Offset="0.0"/>
-						<GradientStop Color="#AAA" Offset="1.0"/>
-					</GradientStopCollection>
-				</GradientBrush.GradientStops>
-			</LinearGradientBrush>
-
-			<LinearGradientBrush x:Key="PressedBrush" StartPoint="0,0" EndPoint="0,1">
-				<GradientBrush.GradientStops>
-					<GradientStopCollection>
-						<GradientStop Color="#BBB" Offset="0.0"/>
-						<GradientStop Color="#EEE" Offset="0.1"/>
-						<GradientStop Color="#EEE" Offset="0.9"/>
-						<GradientStop Color="#FFF" Offset="1.0"/>
-					</GradientStopCollection>
-				</GradientBrush.GradientStops>
-			</LinearGradientBrush>
-
-			<SolidColorBrush x:Key="DisabledForegroundBrush" Color="#888" />
-			<SolidColorBrush x:Key="DisabledBackgroundBrush" Color="#EEE" />
-			<SolidColorBrush x:Key="WindowBackgroundBrush" Color="#FFF" />
-			<SolidColorBrush x:Key="SelectedBackgroundBrush" Color="#DDD" />
-
-			<Style TargetType="Button">
-				<Setter Property="SnapsToDevicePixels" Value="true"/>
-				<Setter Property="OverridesDefaultStyle" Value="true"/>
-				<Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
-				<Setter Property="Height" Value="50"/>
-				<Setter Property="Width" Value="50"/>
-				<Setter Property="Template">
-					<Setter.Value>
-						<ControlTemplate TargetType="Button">
-							<Grid>
-								<Path x:Name="Hexagon" Stroke="Black" Stretch="Fill" Fill="{StaticResource NormalBrush}" 
-									  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-									  Width="{TemplateBinding Width}" Height="{TemplateBinding Height}"
-									  Data="M8.660254,0 L17.320508,5 17.320508,15 8.660254,20 0,15 0,5 8.660254,0 z"/>
-								<Label Content="{Binding Path=Content, RelativeSource={RelativeSource Mode=TemplatedParent}}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-							</Grid>
-
-							<ControlTemplate.Triggers>
-								<Trigger Property="IsMouseOver" Value="true">
-									<Setter TargetName="Hexagon" Property="Fill" Value="{StaticResource DarkBrush}" />
-								</Trigger>
-								<Trigger Property="IsPressed" Value="true">
-									<Setter TargetName="Hexagon" Property="Fill" Value="{StaticResource PressedBrush}" />
-								</Trigger>
-								<Trigger Property="IsEnabled" Value="false">
-									<Setter TargetName="Hexagon" Property="Fill" Value="{StaticResource DisabledBackgroundBrush}" />
-									<Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
-								</Trigger>
-							</ControlTemplate.Triggers>
-						</ControlTemplate>
-					</Setter.Value>
-				</Setter>
-			</Style>
-		</Grid.Resources>
-		<DockPanel>
-			<views:PlayerSummaryView x:Name="Player1Summary" DockPanel.Dock="Left" />
-		</DockPanel>
-		<views:HexGridView x:Name="hexGridView" />
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="*" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+		
+			<views:PlayerSummaryView Grid.Row="0" Grid.Column="0" x:Name="Player1Summary" Margin="15" />
+			<views:PlayerSummaryView Grid.Row="0" Grid.Column="2" x:Name="Player2Summary" Margin="15" />
+			<views:PlayerSummaryView Grid.Row="2" Grid.Column="2" x:Name="Player3Summary" Margin="15" />
+		</Grid>
+		
+		<views:HexGridView Margin="50 50 0 0" x:Name="hexGridView" />
 
 		<!--<DockPanel>
 			<WrapPanel x:Name="MyHexagonMenu" DockPanel.Dock="Top">
