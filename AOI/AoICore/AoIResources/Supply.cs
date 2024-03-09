@@ -16,6 +16,13 @@ namespace AoICore.AoIResources
 		public bool CanPay(Cost cost) {
 			return Coins >= cost.Coins && Tools >= cost.Tools;
 		}
+		public bool CanPay(Tools tools) {
+			return Tools >= tools;
+		}
+		public bool CanPay(Coins coins) {
+			return Coins >= coins;
+		}
+
 
 		public bool Pay(Cost cost) {
 			if(!CanPay(cost)) { throw new InvalidOperationException("Insufficient resources to pay cost"); }

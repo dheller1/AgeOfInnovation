@@ -88,8 +88,19 @@ namespace AoIWPFGui.ViewModels
 			set => this.RaiseAndSetIfChanged(ref _imageSource, value);
 		}
 
+		private object? _popupContent;
+		public object? PopupContent {
+			get => _popupContent;
+			set => this.RaiseAndSetIfChanged(ref _popupContent, value);
+		}
+
+		public bool IsPopupVisible => _popupContent != null && IsMouseOver;
+
 		public BuildingType? PreviewBuildingOnMouseOver { get; internal set; }
-		public void ResetPreviewBuilding() => PreviewBuildingOnMouseOver = null;
+		public void ResetPreviewBuilding() {
+			PreviewBuildingOnMouseOver = null;
+			PopupContent = null;
+		}
 
 		public string Coordinates => $"({TerrainHex.Q}, {TerrainHex.R})";
 
@@ -101,6 +112,7 @@ namespace AoIWPFGui.ViewModels
 		public double CellMargin { get; set; } = 6;
 
 		private void UpdateMouseOverVisualization() {
+			this.RaisePropertyChanged(nameof(IsPopupVisible));
 			if(IsMouseOver && PreviewBuildingOnMouseOver != null) {
 				ImageSource = ImageResources.GetBuilding(PreviewBuildingOnMouseOver, TerrainHex.Terrain);
 				BuildingOpacity = 0.7;

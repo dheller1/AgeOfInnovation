@@ -17,5 +17,8 @@
 		<Path x:Name="HexagonPath" Stroke="Black" StrokeThickness="2" />
 		<Image x:Name="BuildingImage" Width="48" Canvas.Left="-24" Canvas.Top="-24" />
 		<TextBlock x:Name="CoordinateText" FontSize="14" />
+		<Popup x:Name="Popup" AllowsTransparency="True" VerticalOffset="-96" HorizontalOffset="-72">
+			<ContentControl x:Name="PopupContent" />
+		</Popup>
 	</Canvas>
 </reactiveui:ReactiveUserControl>

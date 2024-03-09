@@ -2,6 +2,7 @@
 using AoICore.Commands;
 using AoICore.StateMachine.States;
 using AoIWPFGui.Util;
+using AoIWPFGui.Views;
 using System.Windows.Input;
 
 namespace AoIWPFGui.ViewModels.Behaviors
@@ -31,6 +32,9 @@ namespace AoIWPFGui.ViewModels.Behaviors
 				if(cell.TerrainHex.Terrain == CurrentState.ActivePlayer.AssociatedTerrain) {
 					if(cell.TerrainHex.Building?.Type == BuildingTypes.Workshop) {
 						cell.PreviewBuildingOnMouseOver = BuildingTypes.Guild;
+						cell.PopupContent = new ResourceCostView {
+							ViewModel = new ResourceCostViewModel(cell.TerrainHex.Building.Type.UpgradeOptions.First().Cost, CurrentState.ActivePlayer)
+						};
 					}
 				}
 				else {
@@ -49,6 +53,7 @@ namespace AoIWPFGui.ViewModels.Behaviors
 			}
 			AssociatedObject.CellMouseDown -= OnCellMouseDown;
 		}
+
 		private void OnCellMouseDown(TerrainHexViewModel cell, MouseButtonEventArgs e) {
 			if(!IsActive) { throw new InvalidOperationException("event should be unsubscribed when inactive!"); }
 			if(e.ChangedButton == MouseButton.Left) {

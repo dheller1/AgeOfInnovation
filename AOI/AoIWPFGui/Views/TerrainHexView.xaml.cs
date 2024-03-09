@@ -35,6 +35,17 @@ namespace AoIWPFGui.Views
 					vm => vm.Opacity,
 					view => view.Opacity)
 				.DisposeWith(disposableRegistration);
+
+				this.OneWayBind(ViewModel,
+					vm => vm.PopupContent,
+					view => view.PopupContent.Content)
+				.DisposeWith(disposableRegistration);
+
+				this.OneWayBind(ViewModel,
+					vm => vm.IsPopupVisible,
+					view => view.Popup.IsOpen)
+				.DisposeWith(disposableRegistration);
+
 			});
 		}
 
