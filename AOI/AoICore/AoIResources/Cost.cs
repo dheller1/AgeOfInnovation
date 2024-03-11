@@ -8,7 +8,7 @@
 			Tools = tools;
 		}
 
-		public Coins Coins { get; }
-		public Tools Tools { get; }
+		public Coins Coins { get; } = new();
+		public Tools Tools { get; } = new();
 	}
 }

@@ -12,7 +12,7 @@
 	<Grid>
 		<Rectangle Margin="6" x:Name="BackgroundRect" Fill="LightGray" Opacity="0.9" RadiusX="6" RadiusY="6" />
 		<TextBlock FontSize="16" Margin="12" FontWeight="Bold">
-			<Run x:Name="CoinsRun"/> <Run x:Name="ToolsRun"/>
+			<Run Text="Cost:"/> <Run x:Name="CoinsRun"/> <Run x:Name="ToolsRun"/>
 		</TextBlock>
 	</Grid>
 </reactiveui:ReactiveUserControl>

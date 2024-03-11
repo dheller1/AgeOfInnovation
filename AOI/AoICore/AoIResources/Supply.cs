@@ -23,7 +23,6 @@ namespace AoICore.AoIResources
 			return Coins >= coins;
 		}
 
-
 		public bool Pay(Cost cost) {
 			if(!CanPay(cost)) { throw new InvalidOperationException("Insufficient resources to pay cost"); }
 			Coins -= cost.Coins;
@@ -34,7 +33,7 @@ namespace AoICore.AoIResources
 		public Coins Coins { get => _coins; private set => SetProperty(ref _coins, value); }
 		public Tools Tools { get => _tools; private set => SetProperty(ref _tools, value); }
 
-		private Coins _coins;
-		private Tools _tools;
+		private Coins _coins = new();
+		private Tools _tools = new();
 	}
 }
