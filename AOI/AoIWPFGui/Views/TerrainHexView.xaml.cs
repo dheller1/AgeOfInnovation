@@ -67,16 +67,19 @@ namespace AoIWPFGui.Views
 		private void InitHexagonPath() {
 			if(ViewModel == null) { throw new NullReferenceException("ViewModel not set!"); }
 
+
 			var baseVectorQ = ViewModel.Orientation == Orientation.Horizontal ? new Vector(1, 0) : new Vector(0, 1);
 			var radius = ViewModel.CellRadius;
 
+			var offset = new Vector(Math.Cos(Math.PI / 6.0) * radius, radius);
+
 			var fig = new PathFigure { IsFilled = true, IsClosed = true };
-			fig.StartPoint = (Point)(baseVectorQ.Rotated(-30) * radius);
-			fig.Segments.Add(new LineSegment((Point)(baseVectorQ.Rotated(+30) * radius), true));
-			fig.Segments.Add(new LineSegment((Point)(baseVectorQ.Rotated(+90) * radius), true));
-			fig.Segments.Add(new LineSegment((Point)(baseVectorQ.Rotated(+150) * radius), true));
-			fig.Segments.Add(new LineSegment((Point)(baseVectorQ.Rotated(+210) * radius), true));
-			fig.Segments.Add(new LineSegment((Point)(baseVectorQ.Rotated(+270) * radius), true));
+			fig.StartPoint = (Point)(offset + baseVectorQ.Rotated(-30) * radius);
+			fig.Segments.Add(new LineSegment((Point)(offset + baseVectorQ.Rotated(+30) * radius), true));
+			fig.Segments.Add(new LineSegment((Point)(offset + baseVectorQ.Rotated(+90) * radius), true));
+			fig.Segments.Add(new LineSegment((Point)(offset + baseVectorQ.Rotated(+150) * radius), true));
+			fig.Segments.Add(new LineSegment((Point)(offset + baseVectorQ.Rotated(+210) * radius), true));
+			fig.Segments.Add(new LineSegment((Point)(offset + baseVectorQ.Rotated(+270) * radius), true));
 
 			var geom = new PathGeometry();
 			geom.Figures.Add(fig);

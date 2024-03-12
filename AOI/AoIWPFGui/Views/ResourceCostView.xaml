@@ -7,11 +7,10 @@
              xmlns:reactiveui="http://reactiveui.net"
              xmlns:vm="clr-namespace:AoIWPFGui.ViewModels"
              xmlns:local="clr-namespace:AoIWPFGui.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             mc:Ignorable="d">
 	<Grid>
-		<Rectangle Margin="6" x:Name="BackgroundRect" Fill="LightGray" Opacity="0.9" RadiusX="6" RadiusY="6" />
-		<TextBlock FontSize="16" Margin="12" FontWeight="Bold">
+		<Rectangle Margin="6" x:Name="BackgroundRect" Fill="LightGray" Opacity="0.92" RadiusX="6" RadiusY="6" />
+		<TextBlock FontSize="18" Margin="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">
 			<Run Text="Cost:"/> <Run x:Name="CoinsRun"/> <Run x:Name="ToolsRun"/>
 		</TextBlock>
 	</Grid>
