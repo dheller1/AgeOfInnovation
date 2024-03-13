@@ -29,6 +29,10 @@ namespace AoIWPFGui.Views
 					view => view.BorderRect.Opacity)
 				.DisposeWith(disposableRegistration);
 
+				this.OneWayBind(ViewModel,
+					vm => vm.ColorBrush,
+					view => view.PlayerColorRect.Fill)
+				.DisposeWith(disposableRegistration);
 			});
 		}
 	}

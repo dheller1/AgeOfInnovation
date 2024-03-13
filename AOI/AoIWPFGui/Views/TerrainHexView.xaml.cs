@@ -1,6 +1,5 @@
 ﻿using AoIWPFGui.Util;
 using AoIWPFGui.ViewModels;
-using System.Diagnostics;
 using System.Reactive.Disposables;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -97,9 +96,7 @@ namespace AoIWPFGui.Views
 		}
 
 		private void OnMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
-			if(ViewModel != null) {
-				ViewModel.OnMouseDown(sender, e);
-			}
+			ViewModel?.OnMouseDown(sender, e);
 		}
 
 		private void OnMouseEnter(object sender, System.Windows.Input.MouseEventArgs e) {

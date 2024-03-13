@@ -1,4 +1,6 @@
 ﻿using AoICore.Players;
+using AoIWPFGui.Util;
+using System.Windows.Media;
 
 namespace AoIWPFGui.ViewModels
 {
@@ -9,11 +11,13 @@ namespace AoIWPFGui.ViewModels
 		public PlayerSummaryViewModel(IPlayer player, IObservable<IPlayer?> activePlayerObservable) {
 			Player = player;
 			activePlayerObservable.Subscribe(this);
+
+			ColorBrush = new SolidColorBrush(AoIColors.TerrainColor(player.AssociatedTerrain));
 		}
 
 		public IPlayer Player { get; }
-
 		public double BorderOpacity { get => _borderOpacity; set => this.RaiseAndSetIfChanged(ref _borderOpacity, value); }
+		public SolidColorBrush ColorBrush { get; }
 
 		public void OnCompleted() {
 			throw new NotImplementedException();
