@@ -88,6 +88,14 @@ namespace AoIWPFGui.Views
 			HexagonPath.Data = geom;
 		}
 
+		private bool _isMouseOver = false;
+		private bool _isMouseOverPopup = false;
+		private void NotifyViewModelMouseOver() {
+			if(ViewModel != null) {
+				ViewModel.IsMouseOver = _isMouseOver || _isMouseOverPopup;
+			}
+		}
+
 		private void OnMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e) {
 			if(ViewModel != null) {
 				ViewModel.OnMouseDown(sender, e);
@@ -95,14 +103,23 @@ namespace AoIWPFGui.Views
 		}
 
 		private void OnMouseEnter(object sender, System.Windows.Input.MouseEventArgs e) {
-			if(ViewModel != null) {
-				ViewModel.IsMouseOver = true;
-			}
+			_isMouseOver = true;
+			NotifyViewModelMouseOver();
 		}
+
 		private void OnMouseLeave(object sender, System.Windows.Input.MouseEventArgs e) {
-			if(ViewModel != null) {
-				ViewModel.IsMouseOver = false;
-			}
+			_isMouseOver = false;
+			NotifyViewModelMouseOver();
+		}
+
+		private void OnPopupMouseEnter(object sender, System.Windows.Input.MouseEventArgs e) {
+			_isMouseOverPopup = true;
+			NotifyViewModelMouseOver();
+		}
+
+		private void OnPopupMouseLeave(object sender, System.Windows.Input.MouseEventArgs e) {
+			_isMouseOverPopup = false;
+			NotifyViewModelMouseOver();
 		}
 	}
 }
