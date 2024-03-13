@@ -1,5 +1,6 @@
 ﻿using AoICore.Buildings;
 using AoICore.Commands;
+using AoICore.Map;
 using AoICore.StateMachine.States;
 using AoIWPFGui.Util;
 using AoIWPFGui.Views;
@@ -29,16 +30,32 @@ namespace AoIWPFGui.ViewModels.Behaviors
 			if(CurrentState == null) { throw new InvalidOperationException(); }
 
 			foreach(var cell in AssociatedObject.Cells) {
-				if(cell.TerrainHex.Terrain == CurrentState.ActivePlayer.AssociatedTerrain) {
-					if(cell.TerrainHex.Building?.Type == BuildingTypes.Workshop) {
-						cell.PreviewBuildingOnMouseOver = BuildingTypes.Guild;
-						cell.PopupContent = new ResourceCostView {
-							ViewModel = new ResourceCostViewModel(cell.TerrainHex.Building.Type.UpgradeOptions.First().Cost, CurrentState.ActivePlayer)
-						};
-					}
+				bool resetPreview = true;
+
+				var hex = cell.TerrainHex;
+				var activePlayer = CurrentState.ActivePlayer;
+				var map = AssociatedObject.Game.Map;
+
+				if(hex.Terrain == activePlayer.AssociatedTerrain && hex.Building?.Type == BuildingTypes.Workshop) {
+					resetPreview = false;
+					cell.PreviewBuildingOnMouseOver = BuildingTypes.Guild;
+					cell.PopupContent = new ResourceCostView {
+						ViewModel = new ResourceCostViewModel(hex.Building.Type.UpgradeOptions.First().Cost, activePlayer)
+					};
 				}
-				else {
-					cell.ResetPreviewBuilding();
+				else if(hex.Building == null && hex.Terrain != Terrain.River && cell.TerrainHex.IsPlayerAdjacent(activePlayer, map)) {
+					resetPreview = false;
+					cell.PreviewBuildingOnMouseOver = BuildingTypes.Workshop;
+					var cost = BuildingTypes.Workshop.Cost;
+					cost.Add(Terraform.GetCost(activePlayer.TerraformingLevel, hex.Terrain, activePlayer.AssociatedTerrain));
+					cell.PopupContent = new ResourceCostView {
+						ViewModel = new ResourceCostViewModel(cost, activePlayer)
+					};
+				}
+				
+				
+				if(resetPreview) {
+					cell.ResetPreviewBuildingAndPopup();
 				}
 			}
 
@@ -49,7 +66,7 @@ namespace AoIWPFGui.ViewModels.Behaviors
 		
 		private void Deactivate() {
 			foreach(var cell in AssociatedObject.Cells) {
-				cell.ResetPreviewBuilding();
+				cell.ResetPreviewBuildingAndPopup();
 			}
 			AssociatedObject.CellMouseDown -= OnCellMouseDown;
 		}

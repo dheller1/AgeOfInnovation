@@ -17,6 +17,8 @@ namespace AoICore.Players
 
 		public Supply Resources { get; } = new();
 
+		public int TerraformingLevel => 0;
+
 		public override string ToString() => $"{Name} ({AssociatedTerrain})";
 	}
 }

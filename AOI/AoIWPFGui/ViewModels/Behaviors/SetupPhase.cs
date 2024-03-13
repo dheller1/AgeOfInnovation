@@ -35,7 +35,7 @@ namespace AoIWPFGui.ViewModels.Behaviors
 					cell.Opacity = 1.0;
 				}
 				else {
-					cell.ResetPreviewBuilding();
+					cell.ResetPreviewBuildingAndPopup();
 					cell.Opacity = 0.25;
 				}
 			}
@@ -63,7 +63,7 @@ namespace AoIWPFGui.ViewModels.Behaviors
 		}
 
 		private static void ResetCell(TerrainHexViewModel cell) {
-			cell.ResetPreviewBuilding();
+			cell.ResetPreviewBuildingAndPopup();
 			cell.Opacity = 1.0;
 		}
 	}

@@ -17,8 +17,8 @@
 		<Path x:Name="HexagonPath" Stroke="Black" StrokeThickness="2" />
 		<Image x:Name="BuildingImage" Width="48" />
 		<TextBlock x:Name="CoordinateText" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
-		<Popup x:Name="Popup" AllowsTransparency="True" PlacementTarget="{Binding ElementName=BuildingImage}"
-			   VerticalOffset="-96" HorizontalOffset="-32">
+		<Popup x:Name="Popup" AllowsTransparency="True" PlacementTarget="{Binding ElementName=HexagonPath}"
+			   Placement="Top" VerticalOffset="16">
 			<ContentControl x:Name="PopupContent" />
 		</Popup>
 	</Grid>

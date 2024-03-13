@@ -17,6 +17,11 @@ namespace AoICore.Map
 		public int R { get; set; }
 		public Terrain Terrain { get; }
 
+		public bool IsPlayerAdjacent(IPlayer player, SmallMap map) {
+			var adjacent = map.GetAdjacentHexes(this);
+			return adjacent.Any(hex => hex.Controller == player);
+		}
+
 		public IBuilding? Building { get => _building; internal set => SetProperty(ref _building, value); }
 		public IPlayer? Controller => Building?.Owner;
 		

@@ -97,7 +97,7 @@ namespace AoIWPFGui.ViewModels
 		public bool IsPopupVisible => _popupContent != null && IsMouseOver;
 
 		public BuildingType? PreviewBuildingOnMouseOver { get; internal set; }
-		public void ResetPreviewBuilding() {
+		public void ResetPreviewBuildingAndPopup() {
 			PreviewBuildingOnMouseOver = null;
 			PopupContent = null;
 		}

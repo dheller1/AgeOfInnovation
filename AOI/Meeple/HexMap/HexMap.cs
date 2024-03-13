@@ -1,9 +1,6 @@
-﻿using System;
+﻿using Meeple.Util;
+using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Meeple.HexMap
 {
@@ -23,14 +20,36 @@ namespace Meeple.HexMap
 					value.Q = q;
 					value.R = r;
 					_fields[(q, r)] = value;
+					_fieldCoordinates[value] = (q, r);
 				}
-				else { _fields.Remove((q, r)); }
+				else {
+					if(_fields.TryGetValue((q, r), out var oldValue)) {
+						_fieldCoordinates.Remove(oldValue);
+					};
+					_fields.Remove((q, r));
+				}
 			}
 		}
 
 		public IEnumerator<T> GetEnumerator() => _fields.Values.GetEnumerator();
 		IEnumerator IEnumerable.GetEnumerator() => _fields.Values.GetEnumerator();
 
+		public IEnumerable<T> AdjacentTo(T field) {
+			return _adjacencies
+				.Select(adj => this[field.Q + adj.Item1, field.R + adj.Item2])
+				.WhereNotNull();
+		}
+
 		private readonly Dictionary<(int, int), T> _fields = [];
+		private readonly Dictionary<T, (int, int)> _fieldCoordinates = [];
+
+		private static readonly (int, int)[] _adjacencies = [
+			(-1,  0),
+			(+1,  0),
+			( 0, -1),
+			(+1, -1),
+			(-1, +1),
+			( 0, +1)
+		];
 	}
 }

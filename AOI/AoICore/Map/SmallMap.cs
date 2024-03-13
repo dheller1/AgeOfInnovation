@@ -115,6 +115,7 @@ namespace AoICore.Map
 			set => _hexMap[q, r] = value;
 		}
 
+		public IEnumerable<TerrainHex> GetAdjacentHexes(TerrainHex hex) => _hexMap.AdjacentTo(hex);
 		public IEnumerator<TerrainHex> GetEnumerator() => _hexMap.GetEnumerator();
 		IEnumerator IEnumerable.GetEnumerator() => _hexMap.GetEnumerator();
 
