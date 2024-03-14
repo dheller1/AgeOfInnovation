@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace AoICore.Map
 {
-	public class SmallMap : IEnumerable<TerrainHex>
+	public class SmallMap : IMap
 	{
 		public SmallMap() {
 			var mapdef = new[] {
@@ -120,6 +120,5 @@ namespace AoICore.Map
 		IEnumerator IEnumerable.GetEnumerator() => _hexMap.GetEnumerator();
 
 		private readonly HexMap<TerrainHex> _hexMap = new();
-
 	}
 }

@@ -21,7 +21,7 @@ namespace AoICore
 		public IGameState CurrentState => StateMachine.CurrentState;
 		public IPlayer? ActivePlayer => StateMachine.ActivePlayer;
 
-		public SmallMap Map { get; } = new SmallMap();
+		public IMap Map { get; } = new SmallMap();
 
 		internal StateMachine.StateMachine StateMachine { get; }
 

@@ -17,7 +17,7 @@ namespace AoICore.Map
 		public int R { get; set; }
 		public Terrain Terrain { get; }
 
-		public bool IsPlayerAdjacent(IPlayer player, SmallMap map) {
+		public bool IsPlayerAdjacent(IPlayer player, IMap map) {
 			var adjacent = map.GetAdjacentHexes(this);
 			return adjacent.Any(hex => hex.Controller == player);
 		}

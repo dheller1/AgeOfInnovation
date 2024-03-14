@@ -44,7 +44,7 @@ namespace AoIWPFGui.ViewModels
 
 	public class HexGridViewModel : ReactiveObject
 	{
-		private readonly SmallMap _map;
+		private readonly IMap _map;
 
 		public HexGridViewModel(AoIGame game, IObservable<IGameState> gameState) {
 			_map = game.Map;
