@@ -15,7 +15,7 @@ namespace AoICore.Map
 
 		public int Q { get; set; }
 		public int R { get; set; }
-		public Terrain Terrain { get; }
+		public Terrain Terrain { get => _terrain; internal set => SetProperty(ref _terrain, value); }
 
 		public bool IsPlayerAdjacent(IPlayer player, IMap map) {
 			var adjacent = map.GetAdjacentHexes(this);
@@ -26,5 +26,6 @@ namespace AoICore.Map
 		public IPlayer? Controller => Building?.Owner;
 		
 		private IBuilding? _building = null;
+		private Terrain _terrain;
 	}
 }

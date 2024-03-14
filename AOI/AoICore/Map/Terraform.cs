@@ -1,4 +1,8 @@
-﻿namespace AoICore.Map
+﻿using AoICore.AoIResources;
+using AoICore.Buildings;
+using AoICore.Players;
+
+namespace AoICore.Map
 {
 	public static class Terraform
 	{
@@ -38,9 +42,22 @@
 		/// Returns the cost in tools required to terraform from <paramref name="source"/> to
 		/// <paramref name="target"/> terrain, given the <paramref name="terraformingLevel"/>.
 		/// </summary>
-		public static Tools GetCost(int terraformingLevel, Terrain source, Terrain target) {
+		public static Tools GetTerraformCost(int terraformingLevel, Terrain source, Terrain target) {
 			var shovelCost = CostPerShovel(terraformingLevel);
 			return Math.Abs(GetEffectiveTerrainOffset(source, target)) * shovelCost;
+		}
+
+		/// <summary>
+		/// Returns the total cost (coins and tools) for <paramref name="player"/> to terraform
+		/// and build a workshop on <paramref name="location"/>.
+		/// </summary>
+		public static Cost GetTerraformAndBuildCost(IPlayer player, TerrainHex location) {
+			var sourceTerrain = player.AssociatedTerrain;
+			var targetTerrain = location.Terrain;
+
+			var cost = BuildingTypes.Workshop.Cost;
+			cost.Add(GetTerraformCost(player.TerraformingLevel, sourceTerrain, targetTerrain));
+			return cost;
 		}
 
 		private static Tools CostPerShovel(int terraformingLevel) {

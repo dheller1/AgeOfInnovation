@@ -45,6 +45,11 @@ namespace AoIWPFGui.Views
 					view => view.Popup.IsOpen)
 				.DisposeWith(disposableRegistration);
 
+				this.OneWayBind(ViewModel,
+					vm => vm.Fill,
+					view => view.HexagonPath.Fill)
+				.DisposeWith(disposableRegistration);
+
 			});
 		}
 
@@ -66,7 +71,6 @@ namespace AoIWPFGui.Views
 		private void InitHexagonPath() {
 			if(ViewModel == null) { throw new NullReferenceException("ViewModel not set!"); }
 
-
 			var baseVectorQ = ViewModel.Orientation == Orientation.Horizontal ? new Vector(1, 0) : new Vector(0, 1);
 			var radius = ViewModel.CellRadius;
 
@@ -82,8 +86,6 @@ namespace AoIWPFGui.Views
 
 			var geom = new PathGeometry();
 			geom.Figures.Add(fig);
-
-			HexagonPath.Fill = ViewModel.Fill;
 			HexagonPath.Data = geom;
 		}
 

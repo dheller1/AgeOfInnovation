@@ -9,7 +9,7 @@ namespace AoICore.Players
 			Name = name;
 			AssociatedTerrain = terrain;
 			Resources.Add((Coins)15);
-			Resources.Add((Tools) 3);
+			Resources.Add((Tools) 6);
 		}
 
 		public string Name { get; }

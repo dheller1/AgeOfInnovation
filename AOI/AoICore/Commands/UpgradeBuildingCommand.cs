@@ -5,7 +5,7 @@ using static AoICore.Buildings.BuildingTypes;
 
 namespace AoICore.Commands
 {
-	public sealed class UpgradeBuildingCommand : ICommand
+	public sealed class UpgradeBuildingCommand : IPlayerCommand
 	{
 		public UpgradeBuildingCommand(IPlayer player, TerrainHex position, BuildingType upgradeType) {
 			Player = player ?? throw new ArgumentNullException(nameof(player));

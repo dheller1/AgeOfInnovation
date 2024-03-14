@@ -12,7 +12,7 @@ namespace AoIWPFGui.ViewModels
 	public class TerrainHexViewModel : ReactiveObject
 	{
 		public TerrainHexViewModel(TerrainHex terrainHex) {
-			Fill = new SolidColorBrush(AoIColors.TerrainColor(terrainHex.Terrain));
+			_fill = new SolidColorBrush(AoIColors.TerrainColor(terrainHex.Terrain));
 			if(terrainHex.Terrain == Terrain.River) {
 				Fill.Opacity = 0.3;
 			}
@@ -32,6 +32,7 @@ namespace AoIWPFGui.ViewModels
 		private void OnTerrainHex_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e) {
 			switch(e.PropertyName) {
 				case nameof(TerrainHex.Building):
+				case nameof(TerrainHex.Terrain):
 					UpdateVisualization();
 					break;
 			}
@@ -39,6 +40,11 @@ namespace AoIWPFGui.ViewModels
 
 		private void UpdateVisualization() {
 			BuildingOpacity = 1.0;
+			Fill = new SolidColorBrush(AoIColors.TerrainColor(TerrainHex.Terrain));
+			if(TerrainHex.Terrain == Terrain.River) {
+				Fill.Opacity = 0.3;
+			}
+			
 			if(TerrainHex.Building != null) {
 				ImageSource = ImageResources.GetBuilding(TerrainHex.Building.Type, TerrainHex.Terrain);
 			}
@@ -93,7 +99,7 @@ namespace AoIWPFGui.ViewModels
 		public double CanvasLeft { get; }
 		public double CanvasTop { get; }
 
-		public Brush Fill { get; set; }
+		public Brush Fill { get => _fill; set => this.RaiseAndSetIfChanged(ref _fill, value); }
 		public double CellRadius { get; set; } = 50;
 		public double CellMargin { get; set; } = 6;
 
@@ -118,5 +124,6 @@ namespace AoIWPFGui.ViewModels
 		private bool _isMouseOver = false;
 		private ImageSource? _imageSource;
 		private double _buildingOpacity = 1.0;
+		private Brush _fill;
 	}
 }

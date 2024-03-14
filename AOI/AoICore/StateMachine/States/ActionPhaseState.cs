@@ -15,19 +15,11 @@ namespace AoICore.StateMachine.States
 		public IPlayer ActivePlayer => _playerOrder.Peek();
 		
 		public IGameState? ApplyCommand(ICommand command) {
-			if(command is PerformActionCommand actionCmd) {
-				if(actionCmd.Player != ActivePlayer) {
-					throw new InvalidOperationException($"The command must be issued by {ActivePlayer}.");
-				}
-
-				_playerOrder.Enqueue(_playerOrder.Dequeue());
-				return new ActionPhaseState(_playerOrder);
+			if(command is IPlayerCommand playerCommand && playerCommand.Player != ActivePlayer) {
+				throw new InvalidOperationException($"The command must be issued by {ActivePlayer}.");
 			}
-			else if(command is UpgradeBuildingCommand upgradeBuildingCmd) {
-				if(upgradeBuildingCmd.Player != ActivePlayer) {
-					throw new InvalidOperationException($"The command must be issued by {ActivePlayer}.");
-				}
 
+			if(command is UpgradeBuildingCommand || command is TerraformAndBuildCommand) {
 				_playerOrder.Enqueue(_playerOrder.Dequeue());
 				return new ActionPhaseState(_playerOrder);
 			}

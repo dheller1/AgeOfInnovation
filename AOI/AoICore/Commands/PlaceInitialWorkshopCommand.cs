@@ -4,7 +4,7 @@ using AoICore.Players;
 
 namespace AoICore.Commands
 {
-	public sealed class PlaceInitialWorkshopCommand : ICommand
+	public sealed class PlaceInitialWorkshopCommand : IPlayerCommand
 	{
 		public PlaceInitialWorkshopCommand(IPlayer player, TerrainHex position) {
 			Player = player ?? throw new ArgumentNullException(nameof(player));

@@ -46,10 +46,8 @@ namespace AoIWPFGui.ViewModels.Behaviors
 				else if(hex.Building == null && hex.Terrain != Terrain.River && cell.TerrainHex.IsPlayerAdjacent(activePlayer, map)) {
 					resetPreview = false;
 					cell.PreviewBuildingOnMouseOver = BuildingTypes.Workshop;
-					var cost = BuildingTypes.Workshop.Cost;
-					cost.Add(Terraform.GetCost(activePlayer.TerraformingLevel, hex.Terrain, activePlayer.AssociatedTerrain));
 					cell.PopupContent = new ResourceCostView {
-						ViewModel = new ResourceCostViewModel(cost, activePlayer)
+						ViewModel = new ResourceCostViewModel(Terraform.GetTerraformAndBuildCost(activePlayer, hex), activePlayer)
 					};
 				}
 				
@@ -75,8 +73,16 @@ namespace AoIWPFGui.ViewModels.Behaviors
 			if(!IsActive) { throw new InvalidOperationException("event should be unsubscribed when inactive!"); }
 			if(e.ChangedButton == MouseButton.Left) {
 				var player = CurrentState?.ActivePlayer ?? throw new InvalidOperationException();
+
+				// FIXME: It's bad that the following condition statements basically duplicate what is already present in Activate().
+				// Probably we should store some "tentative command" in each TerrainHex which can then just be executed.
+				// (Or at least create a tentative command in both cases and just check its CanExecute property to avoid code duplication).
 				if(cell.TerrainHex.Terrain == player.AssociatedTerrain && cell.TerrainHex.Building?.Type == BuildingTypes.Workshop) {
 					var cmd = new UpgradeBuildingCommand(player, cell.TerrainHex, cell.TerrainHex.Building.Type.UpgradeOptions.First());
+					AssociatedObject.Game.InvokeCommand(cmd);
+				}
+				else if(cell.TerrainHex.IsPlayerAdjacent(player, AssociatedObject.Game.Map) && cell.TerrainHex.Terrain != Terrain.River && cell.TerrainHex.Building == null) {
+					var cmd = new TerraformAndBuildCommand(player, AssociatedObject.Game.Map, cell.TerrainHex);
 					AssociatedObject.Game.InvokeCommand(cmd);
 				}
 			}
