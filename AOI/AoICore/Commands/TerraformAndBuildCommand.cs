@@ -21,17 +21,23 @@ namespace AoICore.Commands
 		public TerrainHex Position { get; }
 
 		private readonly Cost _cost;
-		private Terrain _originalTerrain;
+		private readonly Terrain _originalTerrain;
 
 		public bool CanExecute {
+			get {
+				if(!CanExecute_IgnoreCost) {
+					return false;
+				}
+				return Player.Resources.CanPay(_cost);
+			}
+		}
+
+		public bool CanExecute_IgnoreCost {
 			get {
 				if(Position.Building != null || Position.Terrain == Terrain.River) {
 					return false;
 				}
 				else if(!Position.IsPlayerAdjacent(Player, Map)) {
-					return false;
-				}
-				else if(!Player.Resources.CanPay(_cost)) {
 					return false;
 				}
 				return true;

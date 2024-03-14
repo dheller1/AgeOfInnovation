@@ -1,4 +1,5 @@
-﻿using AoICore.Buildings;
+﻿using AoICore;
+using AoICore.Buildings;
 using AoICore.Commands;
 using AoICore.Map;
 using AoICore.StateMachine.States;
@@ -16,6 +17,8 @@ namespace AoIWPFGui.ViewModels.Behaviors
 		}
 
 		private ActionPhaseState? CurrentState => _currentState as ActionPhaseState;
+		private AoIGame Game => AssociatedObject.Game;
+		private IMap Map => AssociatedObject.Game.Map;
 
 		protected override void OnNextState(bool wasActive, bool isActive) {
 			if(isActive) {
@@ -34,23 +37,26 @@ namespace AoIWPFGui.ViewModels.Behaviors
 
 				var hex = cell.TerrainHex;
 				var activePlayer = CurrentState.ActivePlayer;
-				var map = AssociatedObject.Game.Map;
 
-				if(hex.Terrain == activePlayer.AssociatedTerrain && hex.Building?.Type == BuildingTypes.Workshop) {
+				var upgradeCmd = new UpgradeBuildingCommand(activePlayer, hex, BuildingTypes.Workshop.UpgradeOptions.First());
+				if(upgradeCmd.CanExecute_IgnoreCost) {
 					resetPreview = false;
 					cell.PreviewBuildingOnMouseOver = BuildingTypes.Guild;
 					cell.PopupContent = new ResourceCostView {
-						ViewModel = new ResourceCostViewModel(hex.Building.Type.UpgradeOptions.First().Cost, activePlayer)
+						ViewModel = new ResourceCostViewModel(hex.Building!.Type.UpgradeOptions.First().Cost, activePlayer)
 					};
+					_onClickCommands[hex] = upgradeCmd;
 				}
-				else if(hex.Building == null && hex.Terrain != Terrain.River && cell.TerrainHex.IsPlayerAdjacent(activePlayer, map)) {
+
+				var terraformAndBuildCmd = new TerraformAndBuildCommand(activePlayer, Map, hex);
+				if(terraformAndBuildCmd.CanExecute_IgnoreCost) {
 					resetPreview = false;
 					cell.PreviewBuildingOnMouseOver = BuildingTypes.Workshop;
 					cell.PopupContent = new ResourceCostView {
 						ViewModel = new ResourceCostViewModel(Terraform.GetTerraformAndBuildCost(activePlayer, hex), activePlayer)
 					};
+					_onClickCommands[hex] = terraformAndBuildCmd;
 				}
-				
 				
 				if(resetPreview) {
 					cell.ResetPreviewBuildingAndPopup();
@@ -66,24 +72,19 @@ namespace AoIWPFGui.ViewModels.Behaviors
 			foreach(var cell in AssociatedObject.Cells) {
 				cell.ResetPreviewBuildingAndPopup();
 			}
+			_onClickCommands.Clear();
 			AssociatedObject.CellMouseDown -= OnCellMouseDown;
 		}
+
+		private readonly Dictionary<TerrainHex, AoICore.Commands.ICommand> _onClickCommands = [];
 
 		private void OnCellMouseDown(TerrainHexViewModel cell, MouseButtonEventArgs e) {
 			if(!IsActive) { throw new InvalidOperationException("event should be unsubscribed when inactive!"); }
 			if(e.ChangedButton == MouseButton.Left) {
 				var player = CurrentState?.ActivePlayer ?? throw new InvalidOperationException();
 
-				// FIXME: It's bad that the following condition statements basically duplicate what is already present in Activate().
-				// Probably we should store some "tentative command" in each TerrainHex which can then just be executed.
-				// (Or at least create a tentative command in both cases and just check its CanExecute property to avoid code duplication).
-				if(cell.TerrainHex.Terrain == player.AssociatedTerrain && cell.TerrainHex.Building?.Type == BuildingTypes.Workshop) {
-					var cmd = new UpgradeBuildingCommand(player, cell.TerrainHex, cell.TerrainHex.Building.Type.UpgradeOptions.First());
-					AssociatedObject.Game.InvokeCommand(cmd);
-				}
-				else if(cell.TerrainHex.IsPlayerAdjacent(player, AssociatedObject.Game.Map) && cell.TerrainHex.Terrain != Terrain.River && cell.TerrainHex.Building == null) {
-					var cmd = new TerraformAndBuildCommand(player, AssociatedObject.Game.Map, cell.TerrainHex);
-					AssociatedObject.Game.InvokeCommand(cmd);
+				if(_onClickCommands.TryGetValue(cell.TerrainHex, out var command) && command.CanExecute) {
+					Game.InvokeCommand(command);
 				}
 			}
 		}

@@ -21,10 +21,16 @@ namespace AoICore.Commands
 
 		public bool CanExecute {
 			get {
-				if(Player.AssociatedTerrain != Position.Terrain || Position.Building == null) {
+				if(!CanExecute_IgnoreCost) {
 					return false;
 				}
-				if(!Player.Resources.CanPay(UpgradeType.Cost)) {
+				return Player.Resources.CanPay(UpgradeType.Cost);
+			}
+		}
+
+		public bool CanExecute_IgnoreCost {
+			get {
+				if(Player.AssociatedTerrain != Position.Terrain || Position.Building == null) {
 					return false;
 				}
 				return true;

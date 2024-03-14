@@ -2,6 +2,7 @@
 using AoIWPFGui.ViewModels;
 using System.Reactive.Disposables;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace AoIWPFGui.Views
