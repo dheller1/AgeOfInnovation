@@ -8,11 +8,19 @@ namespace AoICore.StateMachine.States
 		public ActionPhaseState(IEnumerable<IPlayer> playerOrder) {
 			ArgumentNullException.ThrowIfNull(playerOrder);
 
-			_playerOrder = new Queue<IPlayer>(playerOrder);
+			_playerOrder = playerOrder.ToArray();
+			_playerIndex = 0;
 		}
 
-		private readonly Queue<IPlayer> _playerOrder;
-		public IPlayer ActivePlayer => _playerOrder.Peek();
+		public ActionPhaseState(ActionPhaseState other, int startIndex) {
+			_playerOrder = other._playerOrder;
+			_playerIndex = startIndex;
+		}
+
+		private readonly IPlayer[] _playerOrder;
+		private readonly int _playerIndex;  // index of the active player
+
+		public IPlayer ActivePlayer => _playerOrder[_playerIndex];
 		
 		public IGameState? ApplyCommand(ICommand command) {
 			if(command is IPlayerCommand playerCommand && playerCommand.Player != ActivePlayer) {
@@ -20,8 +28,8 @@ namespace AoICore.StateMachine.States
 			}
 
 			if(command is UpgradeBuildingCommand || command is TerraformAndBuildCommand) {
-				_playerOrder.Enqueue(_playerOrder.Dequeue());
-				return new ActionPhaseState(_playerOrder);
+				var nextIndex = (_playerIndex + 1) % _playerOrder.Length;
+				return new ActionPhaseState(this, nextIndex);
 			}
 			throw new UnsupportedCommandException(command);
 		}

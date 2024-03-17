@@ -5,5 +5,11 @@
 	/// </summary>
 	internal class CommandExecutor
 	{
+		public CommandHistory History { get; } = new();
+
+		public void ExecuteCommand(ICommand command) {
+			command.Execute();
+			History.AddExecuted(command);
+		}
 	}
 }

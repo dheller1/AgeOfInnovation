@@ -13,11 +13,14 @@ namespace AoIWPFGui.ViewModels
 			Player1SummaryVM = new PlayerSummaryViewModel(Game.Players.ElementAt(0), activePlayerObserver);
 			Player2SummaryVM = new PlayerSummaryViewModel(Game.Players.ElementAt(1), activePlayerObserver);
 			Player3SummaryVM = new PlayerSummaryViewModel(Game.Players.ElementAt(2), activePlayerObserver);
+
+			CommandHistoryVM = new CommandHistoryViewModel(Game, Game.CommandHistory);
 		}
 
 		public AoIGame Game { get; } = new AoIGame();
 		
 		public HexGridViewModel HexGridVM { get; }
+		public CommandHistoryViewModel CommandHistoryVM { get; }
 		public PlayerSummaryViewModel Player1SummaryVM { get; }
 		public PlayerSummaryViewModel Player2SummaryVM { get; }
 		public PlayerSummaryViewModel Player3SummaryVM { get; }

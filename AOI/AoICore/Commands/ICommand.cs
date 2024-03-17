@@ -5,5 +5,7 @@
 		bool CanExecute { get; }
 		void Execute();
 		void Undo();
+
+		string AsText { get; }
 	}
 }

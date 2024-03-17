@@ -48,7 +48,7 @@ namespace AoICore.Commands
 			Player.Resources.Add(UpgradeType.Cost);
 		}
 
-		public override string ToString() => $"{nameof(UpgradeBuildingCommand)}";
-
+		public string AsText => ToString();
+		public override string ToString() => $"{Player}: Upgrade to {UpgradeType}";
 	}
 }

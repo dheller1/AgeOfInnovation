@@ -12,22 +12,22 @@ namespace AoICore.StateMachine.States
 			ArgumentNullException.ThrowIfNull(playerOrder);
 
 			_playerOrder = playerOrder.Concat(playerOrder.Reverse()).ToArray();
-			_playerEnumerator = _playerOrder.GetEnumerator();
-			_playerEnumerator.MoveNext();
+			_playerIndex = 0;
 		}
 
 		/// <summary>
 		/// Copy ctor used to ensure a new game state object is produced after applying an operation
 		/// </summary>
-		private PlaceInitialWorkshopState(PlaceInitialWorkshopState state) {
-			_playerOrder = state._playerOrder;
-			_playerEnumerator = state._playerEnumerator;
+		private PlaceInitialWorkshopState(PlaceInitialWorkshopState state, int startIndex) {
+			if(startIndex < 0 || startIndex >= state._playerOrder.Length) { throw new ArgumentOutOfRangeException(nameof(startIndex)); }
+			_playerOrder = state._playerOrder.ToArray();
+			_playerIndex = startIndex;
 		}
 
-		private readonly IEnumerable<IPlayer> _playerOrder;
-		private readonly IEnumerator<IPlayer> _playerEnumerator;
+		private readonly IPlayer[] _playerOrder;
+		private readonly int _playerIndex;
 
-		public IPlayer ActivePlayer => _playerEnumerator.Current;
+		public IPlayer ActivePlayer => _playerOrder[_playerIndex];
 
 		public IGameState? ApplyCommand(ICommand command) {
 			if(!(command is PlaceInitialWorkshopCommand placeCmd)) {
@@ -38,11 +38,12 @@ namespace AoICore.StateMachine.States
 				throw new InvalidOperationException($"The command must be issued by {ActivePlayer}.");
 			}
 
-			if(_playerEnumerator.MoveNext()) {
-				return new PlaceInitialWorkshopState(this);
+			var nextIndex = _playerIndex + 1;
+			if(nextIndex < _playerOrder.Length) {
+				return new PlaceInitialWorkshopState(this, nextIndex);
 			}
 			else {
-				return new ActionPhaseState(_playerOrder.Take(_playerOrder.Count() / 2));
+				return new ActionPhaseState(_playerOrder.Take(_playerOrder.Length / 2));
 			}
 		}
 	}

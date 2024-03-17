@@ -8,26 +8,29 @@
         xmlns:vm="clr-namespace:AoIWPFGui.ViewModels"
         xmlns:views="clr-namespace:AoIWPFGui.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1024" Width="1280">
+        Title="MainWindow" Height="1050" Width="1600">
 
-	<Grid>
+	<DockPanel>
+		<views:CommandHistoryView x:Name="CommandHistoryView" DockPanel.Dock="Right" MinWidth="200" />
 		<Grid>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto" />
-				<ColumnDefinition Width="*" />
-				<ColumnDefinition Width="Auto" />
-			</Grid.ColumnDefinitions>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="*" />
-				<RowDefinition Height="Auto" />
-			</Grid.RowDefinitions>
-		
-			<views:PlayerSummaryView Grid.Row="0" Grid.Column="0" x:Name="Player1Summary" Margin="15" />
-			<views:PlayerSummaryView Grid.Row="0" Grid.Column="2" x:Name="Player2Summary" Margin="15" />
-			<views:PlayerSummaryView Grid.Row="2" Grid.Column="2" x:Name="Player3Summary" Margin="15" />
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="*" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+
+				<views:PlayerSummaryView Grid.Row="0" Grid.Column="0" x:Name="Player1Summary" Margin="15" />
+				<views:PlayerSummaryView Grid.Row="0" Grid.Column="2" x:Name="Player2Summary" Margin="15" />
+				<views:PlayerSummaryView Grid.Row="2" Grid.Column="2" x:Name="Player3Summary" Margin="15" />
+			</Grid>
+
+			<views:HexGridView Margin="50 50 0 0" x:Name="hexGridView" />
 		</Grid>
-		
-		<views:HexGridView Margin="50 50 0 0" x:Name="hexGridView" />
-	</Grid>
+	</DockPanel>
 </reactiveui:ReactiveWindow>

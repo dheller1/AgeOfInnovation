@@ -55,5 +55,8 @@ namespace AoICore.Commands
 			Position.Building = null;
 			Player.Resources.Add(_cost);
 		}
+
+		public string AsText => ToString();
+		public override string ToString() => $"{Player}: Terraform and Build";
 	}
 }

@@ -14,31 +14,38 @@ namespace AoICore.StateMachine
 		/// <summary>
 		/// The player who is currently required to act (if any)
 		/// </summary>
-		public IPlayer? ActivePlayer { get => _activePlayer; private set => SetProperty(ref _activePlayer, value); }
-
-		public void ApplyCommand(ICommand command) {
-			var newState = CurrentState.ApplyCommand(command);
-			command.Execute();
-			if(newState != null) {
-				CurrentState = newState;
-				if(newState is IActivePlayerGameState apgs) {
-					ActivePlayer = apgs.ActivePlayer;
-				}
-				else {
-					ActivePlayer = null;
-				}
-			}
-			else {
-				CurrentState = new FinishedState();
-			}
-		}
-
+		public IPlayer? ActivePlayer => CurrentState is IActivePlayerGameState apgs ? apgs.ActivePlayer : null;
+		public CommandHistory CommandHistory => _executor.History;
 		public IGameState CurrentState {
 			get => _currentState;
 			private set => SetProperty(ref _currentState, value);
 		}
 
+		public void ApplyCommand(ICommand command) {
+			var newState = CurrentState.ApplyCommand(command);
+			_executor.ExecuteCommand(command);
+			if(newState != null) {
+				UpdateState(newState);
+			}
+			else {
+				UpdateState(new FinishedState());
+			}
+		}
+
+		internal void Undo() {
+			CommandHistory.Undo();
+			CurrentState = _stateHistory.Pop();
+			NotifyPropertyChanged(nameof(ActivePlayer));
+		}
+
+		private void UpdateState(IGameState newState) {
+			_stateHistory.Push(CurrentState);
+			CurrentState = newState;
+			NotifyPropertyChanged(nameof(ActivePlayer));
+		}
+
 		private IGameState _currentState;
-		private IPlayer? _activePlayer;
+		private readonly CommandExecutor _executor = new();
+		private readonly Stack<IGameState> _stateHistory = [];
 	}
 }

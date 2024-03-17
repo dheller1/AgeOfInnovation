@@ -24,7 +24,7 @@ namespace AoICore.Commands
 			Position.Building = null;
 		}
 
-		public override string ToString() => $"{nameof(PlaceInitialWorkshopCommand)}";
-
+		public string AsText => ToString();
+		public override string ToString() => $"{Player}: Place initial Workshop";
 	}
 }

@@ -81,8 +81,6 @@ namespace AoIWPFGui.ViewModels.Behaviors
 		private void OnCellMouseDown(TerrainHexViewModel cell, MouseButtonEventArgs e) {
 			if(!IsActive) { throw new InvalidOperationException("event should be unsubscribed when inactive!"); }
 			if(e.ChangedButton == MouseButton.Left) {
-				var player = CurrentState?.ActivePlayer ?? throw new InvalidOperationException();
-
 				if(_onClickCommands.TryGetValue(cell.TerrainHex, out var command) && command.CanExecute) {
 					Game.InvokeCommand(command);
 				}

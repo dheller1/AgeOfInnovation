@@ -32,6 +32,11 @@ namespace AoIWPFGui.Views
 					vm => vm.Player3SummaryVM,
 					view => view.Player3Summary.ViewModel)
 				.DisposeWith(disposableRegistration);
+
+				this.OneWayBind(ViewModel,
+					vm => vm.CommandHistoryVM,
+					view => view.CommandHistoryView.ViewModel)
+				.DisposeWith(disposableRegistration);
 			});
 		}
 	}

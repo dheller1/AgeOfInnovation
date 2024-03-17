@@ -17,11 +17,16 @@ namespace AoICore
 			StateMachine.ApplyCommand(command);
 		}
 
+		public void UndoCommand() {
+			StateMachine.Undo();
+		}
+
 		public IEnumerable<IPlayer> Players { get; }
 		public IGameState CurrentState => StateMachine.CurrentState;
 		public IPlayer? ActivePlayer => StateMachine.ActivePlayer;
-
+		
 		public IMap Map { get; } = new SmallMap();
+		public CommandHistory CommandHistory => StateMachine.CommandHistory;
 
 		internal StateMachine.StateMachine StateMachine { get; }
 
