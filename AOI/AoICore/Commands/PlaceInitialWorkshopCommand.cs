@@ -17,9 +17,10 @@ namespace AoICore.Commands
 		public bool CanExecute => Player.AssociatedTerrain == Position.Terrain && Position.Building == null;
 
 		public void Execute() {
-			if(Position.Building != null) { throw new InvalidOperationException("The hex already contains a building."); }
+			if(!CanExecute) { throw new InvalidOperationException(); }
 			Position.Building = new Building(Player, BuildingTypes.Workshop);
 		}
+
 		public void Undo() {
 			Position.Building = null;
 		}
