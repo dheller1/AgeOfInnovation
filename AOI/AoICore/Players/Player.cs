@@ -16,6 +16,7 @@ namespace AoICore.Players
 		public Terrain AssociatedTerrain { get; set; }
 
 		public Supply Resources { get; } = new();
+		public PowerSupply Power { get; } = new();
 
 		public int TerraformingLevel => 0;
 

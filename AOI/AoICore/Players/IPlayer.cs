@@ -8,6 +8,7 @@ namespace AoICore.Players
 		string Name { get; }
 		Terrain AssociatedTerrain { get; }
 		Supply Resources { get; }
+		PowerSupply Power { get; }
 
 		int TerraformingLevel { get; }
 	}
