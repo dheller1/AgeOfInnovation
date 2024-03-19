@@ -9,6 +9,7 @@ namespace AoICore.Players
 		Terrain AssociatedTerrain { get; }
 		Supply Resources { get; }
 		PowerSupply Power { get; }
+		VictoryPoints VictoryPoints { get; set; }
 
 		int TerraformingLevel { get; }
 	}

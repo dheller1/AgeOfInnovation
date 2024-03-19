@@ -18,9 +18,17 @@ namespace AoICore.Players
 		public PowerTokens MaxGain => 2 * Bowl_I + 1 * Bowl_II;
 		public PowerTokens AvailablePower => Bowl_III;
 
-		public void Gain(int amount) => Gain((PowerTokens)amount);
-		public void Gain(PowerTokens tokens) {
+
+		internal struct GainDetails {
+			public PowerTokens I_to_II;
+			public PowerTokens II_to_III;
+		}
+
+		internal GainDetails Gain(int amount) => Gain((PowerTokens)amount);
+		internal GainDetails Gain(PowerTokens tokens) {
 			if(tokens < 0 || tokens > MaxGain) { throw new ArgumentOutOfRangeException(nameof(tokens)); }
+
+			var details = new GainDetails();
 
 			var tokensLeft = tokens;
 			var ItoII = (PowerTokens)Math.Min((int)tokensLeft, (int)Bowl_I);
@@ -28,6 +36,7 @@ namespace AoICore.Players
 				tokensLeft -= ItoII;
 				Bowl_I -= ItoII;
 				Bowl_II += ItoII;
+				details.I_to_II = ItoII;
 			}
 
 			if(tokensLeft > 0) {
@@ -36,13 +45,24 @@ namespace AoICore.Players
 					tokensLeft -= IItoIII;
 					Bowl_II -= IItoIII;
 					Bowl_III += IItoIII;
+					details.II_to_III = IItoIII;
 				}
 			}
 			Debug.Assert(tokensLeft == 0);
+			return details;
 		}
 
-		public void Sacrifice(int amount) => Sacrifice((PowerTokens)amount);
-		public void Sacrifice(PowerTokens tokens) {
+		internal void UndoGain(GainDetails details) {
+			if(details.II_to_III > 0) {
+				Bowl_III -= details.II_to_III;
+				Bowl_II += details.II_to_III;
+			}
+			Bowl_II -= details.I_to_II;
+			Bowl_I += details.I_to_II;
+		}
+
+		internal void Sacrifice(int amount) => Sacrifice((PowerTokens)amount);
+		internal void Sacrifice(PowerTokens tokens) {
 			if(tokens < 0 || 2 * tokens > Bowl_II) { throw new ArgumentOutOfRangeException(nameof(tokens)); }
 
 			Bowl_II -= 2 * tokens;

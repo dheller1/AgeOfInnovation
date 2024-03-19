@@ -17,6 +17,7 @@ namespace AoICore.Players
 
 		public Supply Resources { get; } = new();
 		public PowerSupply Power { get; } = new();
+		public VictoryPoints VictoryPoints { get; set; } = (VictoryPoints)20;
 
 		public int TerraformingLevel => 0;
 
