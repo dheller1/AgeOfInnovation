@@ -22,14 +22,12 @@ namespace AoICore.StateMachine
 		}
 
 		public void ApplyCommand(ICommand command) {
-			var newState = CurrentState.ApplyCommand(command);
+			var followUpStates = CurrentState.ApplyCommand(command);
 			_executor.ExecuteCommand(command);
-			if(newState != null) {
-				UpdateState(newState);
+			foreach(var state in followUpStates.Reverse()) {
+				_followUpStates.Push(state);
 			}
-			else {
-				UpdateState(new FinishedState());
-			}
+			ProceedState();
 		}
 
 		internal void Undo() {
@@ -38,13 +36,20 @@ namespace AoICore.StateMachine
 			NotifyPropertyChanged(nameof(ActivePlayer));
 		}
 
-		private void UpdateState(IGameState newState) {
+		private void ProceedState() {
 			_stateHistory.Push(CurrentState);
-			CurrentState = newState;
+			if(_followUpStates.TryPop(out var newState)) {
+				CurrentState = newState;
+			}
+			else {
+				CurrentState = new FinishedState();
+			}
+			
 			NotifyPropertyChanged(nameof(ActivePlayer));
 		}
 
 		private IGameState _currentState;
+		private readonly Stack<IGameState> _followUpStates = new();
 		private readonly CommandExecutor _executor = new();
 		private readonly Stack<IGameState> _stateHistory = [];
 	}

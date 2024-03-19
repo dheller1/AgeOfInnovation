@@ -29,7 +29,7 @@ namespace AoICore.StateMachine.States
 
 		public IPlayer ActivePlayer => _playerOrder[_playerIndex];
 
-		public IGameState? ApplyCommand(ICommand command) {
+		public IEnumerable<IGameState> ApplyCommand(ICommand command) {
 			if(!(command is PlaceInitialWorkshopCommand placeCmd)) {
 				throw new UnsupportedCommandException(command);
 			}
@@ -40,10 +40,10 @@ namespace AoICore.StateMachine.States
 
 			var nextIndex = _playerIndex + 1;
 			if(nextIndex < _playerOrder.Length) {
-				return new PlaceInitialWorkshopState(this, nextIndex);
+				return [new PlaceInitialWorkshopState(this, nextIndex)];
 			}
 			else {
-				return new ActionPhaseState(_playerOrder.Take(_playerOrder.Length / 2));
+				return [new ActionPhaseState(_playerOrder.Take(_playerOrder.Length / 2))];
 			}
 		}
 	}

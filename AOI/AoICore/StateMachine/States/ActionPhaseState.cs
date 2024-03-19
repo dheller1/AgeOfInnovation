@@ -22,14 +22,14 @@ namespace AoICore.StateMachine.States
 
 		public IPlayer ActivePlayer => _playerOrder[_playerIndex];
 		
-		public IGameState? ApplyCommand(ICommand command) {
+		public IEnumerable<IGameState> ApplyCommand(ICommand command) {
 			if(command is IPlayerCommand playerCommand && playerCommand.Player != ActivePlayer) {
 				throw new InvalidOperationException($"The command must be issued by {ActivePlayer}.");
 			}
 
 			if(command is UpgradeBuildingCommand || command is TerraformAndBuildCommand) {
 				var nextIndex = (_playerIndex + 1) % _playerOrder.Length;
-				return new ActionPhaseState(this, nextIndex);
+				return [new ActionPhaseState(this, nextIndex)];
 			}
 			throw new UnsupportedCommandException(command);
 		}
