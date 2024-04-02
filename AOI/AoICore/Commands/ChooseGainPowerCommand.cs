@@ -1,12 +1,13 @@
 ﻿using AoICore.Players;
+using AoICore.StateMachine.States;
 
 namespace AoICore.Commands
 {
 	public class ChooseGainPowerCommand : IPlayerCommand
 	{
-		public ChooseGainPowerCommand(IPlayer player, PowerTokens gainedTokens) {
-			Player = player;
-			GainedTokens = gainedTokens;
+		public ChooseGainPowerCommand(AllowGainPowerState gameState) {
+			Player = gameState.ActivePlayer;
+			GainedTokens = gameState.MaxGain;
 		}
 
 		public IPlayer Player { get; }
