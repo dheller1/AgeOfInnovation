@@ -38,7 +38,7 @@ namespace AoIWPFGui.ViewModels.Behaviors
 				var hex = cell.TerrainHex;
 				var activePlayer = CurrentState.ActivePlayer;
 
-				var upgradeCmd = new UpgradeBuildingCommand(activePlayer, hex, BuildingTypes.Workshop.UpgradeOptions.First());
+				var upgradeCmd = new UpgradeBuildingCommand(activePlayer, Map, hex, BuildingTypes.Workshop.UpgradeOptions.First());
 				if(upgradeCmd.CanExecute_IgnoreCost) {
 					resetPreview = false;
 					cell.PreviewBuildingOnMouseOver = BuildingTypes.Guild;

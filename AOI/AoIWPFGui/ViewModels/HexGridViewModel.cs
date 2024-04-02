@@ -57,6 +57,9 @@ namespace AoIWPFGui.ViewModels
 
 			var actionPhaseBehavior = new ActionPhaseBehavior(this);
 			gameState.Subscribe(actionPhaseBehavior);
+
+			var powerGainBehavior = new PowerGainPhaseBehavior(this);
+			gameState.Subscribe(powerGainBehavior);
 		}
 
 		public double CellRadius { get; set; } = 50; // equal to the length of each hexagon's edges

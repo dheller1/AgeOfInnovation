@@ -5,15 +5,17 @@ using static AoICore.Buildings.BuildingTypes;
 
 namespace AoICore.Commands
 {
-	public sealed class UpgradeBuildingCommand : IPlayerCommand
+	public sealed class UpgradeBuildingCommand : IPlayerCommand, ITriggerPowerGain
 	{
-		public UpgradeBuildingCommand(IPlayer player, TerrainHex position, BuildingType upgradeType) {
+		public UpgradeBuildingCommand(IPlayer player, IMap map, TerrainHex position, BuildingType upgradeType) {
 			Player = player ?? throw new ArgumentNullException(nameof(player));
+			Map = map;
 			Position = position ?? throw new ArgumentNullException(nameof(position));
 			UpgradeType = upgradeType ?? throw new ArgumentNullException(nameof(upgradeType));
 		}
 
 		public IPlayer Player { get; }
+		public IMap Map { get; }
 		public TerrainHex Position { get; }
 		public BuildingType UpgradeType { get; }
 
@@ -49,6 +51,8 @@ namespace AoICore.Commands
 		}
 
 		public string AsText => ToString();
+
+
 		public override string ToString() => $"{Player}: Upgrade to {UpgradeType}";
 	}
 }

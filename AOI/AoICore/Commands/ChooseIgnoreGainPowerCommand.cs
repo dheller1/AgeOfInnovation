@@ -2,7 +2,7 @@
 
 namespace AoICore.Commands
 {
-	internal class ChooseIgnoreGainPowerCommand : IPlayerCommand
+	public class ChooseIgnoreGainPowerCommand : IPlayerCommand
 	{
 		public ChooseIgnoreGainPowerCommand(IPlayer player) {
 			Player = player;

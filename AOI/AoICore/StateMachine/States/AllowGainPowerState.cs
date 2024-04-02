@@ -19,5 +19,13 @@ namespace AoICore.StateMachine.States
 			}
 			throw new UnsupportedCommandException(command);
 		}
+
+		public ChooseGainPowerCommand GainPowerCommand() {
+			return new ChooseGainPowerCommand(this);
+		}
+
+		public ChooseIgnoreGainPowerCommand IgnoreGainPowerCommand() {
+			return new ChooseIgnoreGainPowerCommand(ActivePlayer);
+		}
 	}
 }

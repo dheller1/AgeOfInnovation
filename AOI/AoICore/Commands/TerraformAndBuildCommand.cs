@@ -5,7 +5,7 @@ using AoICore.Players;
 
 namespace AoICore.Commands
 {
-	public sealed class TerraformAndBuildCommand : IPlayerCommand
+	public sealed class TerraformAndBuildCommand : IPlayerCommand, ITriggerPowerGain
 	{
 		public TerraformAndBuildCommand(IPlayer player, IMap map, TerrainHex position) {
 			Player = player ?? throw new ArgumentNullException(nameof(player));

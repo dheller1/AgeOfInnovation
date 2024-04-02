@@ -1,4 +1,5 @@
 ﻿using AoICore.Commands;
+using AoICore.Effects;
 using AoICore.Players;
 
 namespace AoICore.StateMachine.States
@@ -28,8 +29,13 @@ namespace AoICore.StateMachine.States
 			}
 
 			if(command is UpgradeBuildingCommand || command is TerraformAndBuildCommand) {
+				var followup = new List<IGameState>();
+				if(command is ITriggerPowerGain pgCommand) {
+					followup.AddRange(PowerGain.InvokeFromBuild(pgCommand.Player, pgCommand.Map, pgCommand.Position));
+				}
 				var nextIndex = (_playerIndex + 1) % _playerOrder.Length;
-				return [new ActionPhaseState(this, nextIndex)];
+				followup.Add(new ActionPhaseState(this, nextIndex));
+				return followup;
 			}
 			throw new UnsupportedCommandException(command);
 		}
