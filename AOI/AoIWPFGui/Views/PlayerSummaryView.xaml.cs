@@ -14,6 +14,8 @@ namespace AoIWPFGui.Views
 					view => view.PlayerNameRun.Text)
 				.DisposeWith(disposableRegistration);
 
+
+				// resources
 				this.OneWayBind(ViewModel,
 					vm => vm.Player.Resources.Coins,
 					view => view.CoinsRun.Text)
@@ -23,6 +25,24 @@ namespace AoIWPFGui.Views
 					vm => vm.Player.Resources.Tools,
 					view => view.ToolsRun.Text)
 				.DisposeWith(disposableRegistration);
+
+				// power
+				this.OneWayBind(ViewModel,
+					vm => vm.Player.Power.Bowl_I,
+					view => view.PowerI_Run.Text)
+				.DisposeWith(disposableRegistration);
+
+				this.OneWayBind(ViewModel,
+					vm => vm.Player.Power.Bowl_II,
+					view => view.PowerII_Run.Text)
+				.DisposeWith(disposableRegistration);
+
+				this.OneWayBind(ViewModel,
+					vm => vm.Player.Power.Bowl_III,
+					view => view.PowerIII_Run.Text)
+				.DisposeWith(disposableRegistration);
+
+
 
 				this.OneWayBind(ViewModel,
 					vm => vm.BorderOpacity,

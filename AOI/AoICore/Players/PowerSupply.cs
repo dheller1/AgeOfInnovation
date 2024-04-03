@@ -1,8 +1,9 @@
-﻿using System.Diagnostics;
+﻿using Meeple.Util;
+using System.Diagnostics;
 
 namespace AoICore.Players
 {
-	public class PowerSupply
+	public class PowerSupply : NotificationBase
 	{
 		public PowerSupply() : this((PowerTokens)7, (PowerTokens)5) { }
 
@@ -11,9 +12,9 @@ namespace AoICore.Players
 			Bowl_II = bowl_II;
 		}
 
-		public PowerTokens Bowl_I { get; private set; }
-		public PowerTokens Bowl_II { get; private set; }
-		public PowerTokens Bowl_III { get; private set; } = (PowerTokens)0;
+		public PowerTokens Bowl_I { get => _bowl_I; private set => SetProperty(ref _bowl_I, value); }
+		public PowerTokens Bowl_II { get => _bowl_II; private set => SetProperty(ref _bowl_II, value); }
+		public PowerTokens Bowl_III { get => _bowl_III; private set => SetProperty(ref _bowl_III, value); }
 
 		public PowerTokens MaxGain => 2 * Bowl_I + 1 * Bowl_II;
 		public PowerTokens AvailablePower => Bowl_III;
@@ -68,5 +69,9 @@ namespace AoICore.Players
 			Bowl_II -= 2 * tokens;
 			Bowl_III += tokens;
 		}
+
+		private PowerTokens _bowl_I;
+		private PowerTokens _bowl_II;
+		private PowerTokens _bowl_III = (PowerTokens)0;
 	}
 }
